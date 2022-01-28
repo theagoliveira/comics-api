@@ -8,4 +8,8 @@ import br.com.zup.comicsapi.models.User;
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
 
+    Boolean existsByEmail(String email);
+
+    Boolean existsByCpf(String cpf);
+
 }

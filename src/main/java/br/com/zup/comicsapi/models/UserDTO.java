@@ -6,6 +6,8 @@ import javax.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.br.CPF;
 
 import br.com.zup.comicsapi.validators.BrazilDateFormat;
+import br.com.zup.comicsapi.validators.UniqueCPF;
+import br.com.zup.comicsapi.validators.UniqueEmail;
 
 public class UserDTO {
 
@@ -14,10 +16,12 @@ public class UserDTO {
 
     @NotBlank
     @Email
+    @UniqueEmail
     private String email;
 
     @NotBlank
     @CPF
+    @UniqueCPF
     private String cpf;
 
     @NotBlank
