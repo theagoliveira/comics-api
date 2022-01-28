@@ -16,6 +16,8 @@ public class User {
     private String cpf;
     private String birthDate;
 
+    public User() {}
+
     public User(Long id, String name, String email, String cpf, String birthDate) {
         this.id = id;
         this.name = name;
@@ -33,6 +35,22 @@ public class User {
 
     public Long getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public String getBirthDate() {
+        return birthDate;
     }
 
 }

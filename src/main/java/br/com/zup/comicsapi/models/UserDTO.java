@@ -28,4 +28,29 @@ public class UserDTO {
     @BrazilDateFormat
     private String birthDate;
 
+    public UserDTO() {}
+
+    public UserDTO(String name, String email, String cpf, String birthDate) {
+        this.name = name;
+        this.email = email;
+        this.cpf = cpf;
+        this.birthDate = birthDate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public String getBirthDate() {
+        return birthDate;
+    }
+
 }
