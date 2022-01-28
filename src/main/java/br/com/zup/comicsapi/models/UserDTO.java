@@ -11,21 +11,21 @@ import br.com.zup.comicsapi.validators.UniqueEmail;
 
 public class UserDTO {
 
-    @NotBlank
+    @NotBlank(message = "Name cannot be blank.")
     private String name;
 
-    @NotBlank
-    @Email
-    @UniqueEmail
+    @NotBlank(message = "Email cannot be blank.")
+    @Email(message = "Email is not valid.")
+    @UniqueEmail(message = "Email already exists.")
     private String email;
 
-    @NotBlank
-    @CPF
-    @UniqueCPF
+    @NotBlank(message = "CPF cannot be blank.")
+    @CPF(message = "CPF is not valid.")
+    @UniqueCPF(message = "CPF already exists.")
     private String cpf;
 
-    @NotBlank
-    @BrazilDateFormat
+    @NotBlank(message = "Birth date cannot be blank.")
+    @BrazilDateFormat(message = "Birth date is not valid.")
     private String birthDate;
 
     public UserDTO() {}
