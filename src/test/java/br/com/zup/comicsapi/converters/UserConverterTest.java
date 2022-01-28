@@ -20,22 +20,22 @@ public class UserConverterTest {
     }
 
     @Test
-    void testNullParameterToDto() {
+    void convertNullParameterToDto() {
         assertNull(userConverter.toDto(null));
     }
 
     @Test
-    void testNullParameterToEntity() {
+    void convertNullParameterToEntity() {
         assertNull(userConverter.toEntity(null));
     }
 
     @Test
-    void testEmptyObjectToDto() {
+    void convertEmptyObjectToDto() {
         assertNotNull(userConverter.toDto(new User()));
     }
 
     @Test
-    void testEmptyObjectToEntity() {
+    void convertEmptyObjectToEntity() {
         assertNotNull(userConverter.toEntity(new UserDTO()));
     }
 

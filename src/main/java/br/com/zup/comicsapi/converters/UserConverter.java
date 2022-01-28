@@ -1,8 +1,12 @@
 package br.com.zup.comicsapi.converters;
 
 import br.com.zup.comicsapi.models.UserDTO;
+
+import org.springframework.stereotype.Component;
+
 import br.com.zup.comicsapi.models.User;
 
+@Component
 public class UserConverter {
 
     public UserDTO toDto(User user) {
