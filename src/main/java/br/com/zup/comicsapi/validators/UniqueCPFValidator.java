@@ -15,7 +15,7 @@ public class UniqueCPFValidator implements ConstraintValidator<UniqueCPF, String
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return !userRepository.existsByCpf(value);
+        return !userRepository.existsByCpf(value.replaceAll("[^0-9]", ""));
     }
 
 }
