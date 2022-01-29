@@ -24,7 +24,7 @@ public class ComicDTO {
     private Double price;
 
     @NotEmpty(message = "Authors cannot be empty.", groups = FieldGroup.class)
-    private Set<String> creators = new HashSet<>();
+    private Set<String> authors = new HashSet<>();
 
     @NotBlank(message = "ISBN cannot be blank.", groups = FieldGroup.class)
     @UniqueISBN(message = "ISBN already exists.", groups = CustomGroup.class)
@@ -32,5 +32,46 @@ public class ComicDTO {
 
     @NotBlank(message = "Description cannot be blank.", groups = FieldGroup.class)
     private String description;
+
+    public ComicDTO() {}
+
+    public ComicDTO(String title, double price, String isbn, String description) {
+        this.title = title;
+        this.price = price;
+        this.isbn = isbn;
+        this.description = description;
+    }
+
+    public ComicDTO(Long comicId, String title, double price, String isbn, String description) {
+        this.comicId = comicId;
+        this.title = title;
+        this.price = price;
+        this.isbn = isbn;
+        this.description = description;
+    }
+
+    public Long getComicId() {
+        return comicId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public Set<String> getAuthors() {
+        return authors;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 
 }
