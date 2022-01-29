@@ -1,8 +1,14 @@
 package br.com.zup.comicsapi.models;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class User {
@@ -15,6 +21,10 @@ public class User {
     private String email;
     private String cpf;
     private String birthDate;
+
+    @ManyToMany
+    @JoinTable(name = "user_comic", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "comic_id"))
+    Set<Comic> comics = new HashSet<>();
 
     public User() {}
 
