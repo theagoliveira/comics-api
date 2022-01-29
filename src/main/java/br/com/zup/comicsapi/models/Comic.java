@@ -3,6 +3,7 @@ package br.com.zup.comicsapi.models;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -15,7 +16,11 @@ public class Comic {
 
     private String title;
     private Double price;
+    private Boolean discounted = false;
+
+    @ElementCollection
     private Set<String> authors = new HashSet<>();
+
     private String isbn;
     private String description;
 
@@ -68,6 +73,10 @@ public class Comic {
 
     public Set<User> getUsers() {
         return users;
+    }
+
+    public Boolean isDiscounted() {
+        return discounted;
     }
 
 }
