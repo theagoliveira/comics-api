@@ -3,25 +3,23 @@ package br.com.zup.comicsapi.handlers;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.http.HttpStatus;
-
-public class ApiError {
+public class ApiErrorMap {
 
     private Integer httpValue;
     private String httpError;
     private String message;
     private Map<String, String> errors;
 
-    public ApiError(Integer httpValue, String httpError, String message,
-                    Map<String, String> errors) {
+    public ApiErrorMap(Integer httpValue, String httpError, String message,
+                       Map<String, String> errors) {
         this.httpValue = httpValue;
         this.httpError = httpError;
         this.message = message;
         this.errors = errors;
     }
 
-    public ApiError(Integer httpValue, String httpError, String message, String errorKey,
-                    String errorValue) {
+    public ApiErrorMap(Integer httpValue, String httpError, String message, String errorKey,
+                       String errorValue) {
         this.httpValue = httpValue;
         this.httpError = httpError;
         this.message = message;

@@ -2,8 +2,11 @@ package br.com.zup.comicsapi.handlers;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -37,11 +40,11 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         String errorWord = errors.size() == 1 ? "error" : "errors";
         String message = "Validation failed with " + errors.size() + " " + errorWord + ".";
 
-        ApiError apiError = new ApiError(
+        ApiErrorMap apiErrorMap = new ApiErrorMap(
             returnStatus.value(), returnStatus.getReasonPhrase(), message, errors
         );
 
-        return handleExceptionInternal(ex, apiError, headers, returnStatus, request);
+        return handleExceptionInternal(ex, apiErrorMap, headers, returnStatus, request);
     }
 
     @ExceptionHandler({Exception.class})
@@ -49,11 +52,11 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus returnStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         String message = "An unexpected error occurred.";
 
-        ApiError apiError = new ApiError(
-            returnStatus.value(), returnStatus.getReasonPhrase(), message, null
+        ApiErrorList apiErrorList = new ApiErrorList(
+            returnStatus.value(), returnStatus.getReasonPhrase(), message
         );
 
-        return new ResponseEntity<>(apiError, new HttpHeaders(), returnStatus);
+        return handleExceptionInternal(ex, apiErrorList, new HttpHeaders(), returnStatus, request);
     }
 
     @Override
@@ -61,8 +64,25 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
                                                                          HttpHeaders headers,
                                                                          HttpStatus status,
                                                                          WebRequest request) {
-        // TODO Auto-generated method stub
-        return super.handleHttpRequestMethodNotSupported(ex, headers, status, request);
+        Set<HttpMethod> supportedMethods = ex.getSupportedHttpMethods();
+        String supportedMethodsStr = "";
+
+        if (supportedMethods != null) {
+            supportedMethodsStr = supportedMethods.stream()
+                                                  .map(Object::toString)
+                                                  .collect(Collectors.joining(", "));
+        }
+
+        String message = ex.getMethod() + " method is not supported. Supported methods: "
+                + supportedMethodsStr;
+
+        HttpStatus returnStatus = HttpStatus.METHOD_NOT_ALLOWED;
+
+        ApiErrorList apiErrorList = new ApiErrorList(
+            returnStatus.value(), returnStatus.getReasonPhrase(), ex.getLocalizedMessage(), message
+        );
+
+        return handleExceptionInternal(ex, apiErrorList, new HttpHeaders(), returnStatus, request);
     }
 
     @Override

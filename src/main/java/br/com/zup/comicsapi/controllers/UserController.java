@@ -1,8 +1,12 @@
 package br.com.zup.comicsapi.controllers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +35,15 @@ public class UserController {
     @PostMapping
     public void create(@RequestBody @Valid UserDTO userDTO) {
         userService.save(userConverter.toEntity(userDTO));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
+    public List<UserDTO> index() {
+        return userService.findAll()
+                          .stream()
+                          .map(userConverter::toDto)
+                          .collect(Collectors.toList());
     }
 
 }
