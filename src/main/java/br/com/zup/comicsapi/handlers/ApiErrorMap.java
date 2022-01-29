@@ -8,10 +8,10 @@ public class ApiErrorMap {
     private Integer httpValue;
     private String httpError;
     private String message;
-    private Map<String, String> errors;
+    private Map<String, Object> errors;
 
     public ApiErrorMap(Integer httpValue, String httpError, String message,
-                       Map<String, String> errors) {
+                       Map<String, Object> errors) {
         this.httpValue = httpValue;
         this.httpError = httpError;
         this.message = message;
@@ -19,7 +19,7 @@ public class ApiErrorMap {
     }
 
     public ApiErrorMap(Integer httpValue, String httpError, String message, String errorKey,
-                       String errorValue) {
+                       Object errorValue) {
         this.httpValue = httpValue;
         this.httpError = httpError;
         this.message = message;
@@ -38,7 +38,7 @@ public class ApiErrorMap {
         return message;
     }
 
-    public Map<String, String> getErrors() {
+    public Map<String, Object> getErrors() {
         return errors;
     }
 
