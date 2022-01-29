@@ -14,7 +14,9 @@ public class UserConverter {
             return null;
         }
 
-        return new UserDTO(user.getName(), user.getEmail(), user.getCpf(), user.getBirthDate());
+        return new UserDTO(
+            user.getId(), user.getName(), user.getEmail(), user.getCpf(), user.getBirthDate()
+        );
     }
 
     public User toEntity(UserDTO userDto) {

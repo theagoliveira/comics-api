@@ -128,6 +128,7 @@ class UserControllerTest {
         mockMvc.perform(get(UserController.BASE_URI))
                .andExpect(status().isOk())
                .andExpect(jsonPath("$", hasSize(2)))
+               .andExpect(jsonPath("$.[0].id", equalTo(1)))
                .andExpect(jsonPath("$.[0].name", equalTo("User1")))
                .andExpect(jsonPath("$.[0].email", equalTo("user1@example.com")))
                .andExpect(jsonPath("$.[0].cpf", equalTo("84848518423")))

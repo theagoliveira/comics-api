@@ -15,6 +15,8 @@ import br.com.zup.comicsapi.validators.UniqueEmail;
 @GroupSequence({FieldGroup.class, CustomGroup.class, UserDTO.class})
 public class UserDTO {
 
+    private Long id;
+
     @NotBlank(message = "Name cannot be blank.", groups = FieldGroup.class)
     private String name;
 
@@ -39,6 +41,18 @@ public class UserDTO {
         this.email = email;
         this.cpf = cpf;
         this.birthDate = birthDate;
+    }
+
+    public UserDTO(Long id, String name, String email, String cpf, String birthDate) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.cpf = cpf;
+        this.birthDate = birthDate;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
