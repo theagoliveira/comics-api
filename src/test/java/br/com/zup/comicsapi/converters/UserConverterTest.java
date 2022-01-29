@@ -41,11 +41,12 @@ public class UserConverterTest {
 
     @Test
     void convertToDto() {
-        User user = new User("User", "user@example.com", "12345678900", "01/01/1991");
+        User user = new User(1L, "User", "user@example.com", "12345678900", "01/01/1991");
 
         UserDTO userDto = userConverter.toDto(user);
 
         assertNotNull(userDto);
+        assertEquals(1L, userDto.getId());
         assertEquals("User", userDto.getName());
         assertEquals("user@example.com", userDto.getEmail());
         assertEquals("12345678900", userDto.getCpf());
@@ -54,11 +55,12 @@ public class UserConverterTest {
 
     @Test
     void convertToEntity() {
-        UserDTO userDto = new UserDTO("User", "user@example.com", "12345678900", "01/01/1991");
+        UserDTO userDto = new UserDTO(1L, "User", "user@example.com", "12345678900", "01/01/1991");
 
         User user = userConverter.toEntity(userDto);
 
         assertNotNull(user);
+        assertNull(user.getId());
         assertEquals("User", user.getName());
         assertEquals("user@example.com", user.getEmail());
         assertEquals("12345678900", user.getCpf());

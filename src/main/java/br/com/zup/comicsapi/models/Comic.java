@@ -14,7 +14,7 @@ public class Comic {
     private Long comicId;
 
     private String title;
-    private double price;
+    private Double price;
     private Set<String> authors = new HashSet<>();
     private String isbn;
     private String description;
@@ -24,17 +24,20 @@ public class Comic {
 
     public Comic() {}
 
-    public Comic(String title, double price, String isbn, String description) {
+    public Comic(String title, Double price, Set<String> authors, String isbn, String description) {
         this.title = title;
         this.price = price;
+        this.authors = authors;
         this.isbn = isbn;
         this.description = description;
     }
 
-    public Comic(Long comicId, String title, double price, String isbn, String description) {
+    public Comic(Long comicId, String title, Double price, Set<String> authors, String isbn,
+                 String description) {
         this.comicId = comicId;
         this.title = title;
         this.price = price;
+        this.authors = authors;
         this.isbn = isbn;
         this.description = description;
     }
@@ -47,7 +50,7 @@ public class Comic {
         return title;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 

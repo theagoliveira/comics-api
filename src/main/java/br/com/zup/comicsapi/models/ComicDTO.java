@@ -35,17 +35,21 @@ public class ComicDTO {
 
     public ComicDTO() {}
 
-    public ComicDTO(String title, double price, String isbn, String description) {
+    public ComicDTO(String title, Double price, Set<String> authors, String isbn,
+                    String description) {
         this.title = title;
         this.price = price;
+        this.authors = authors;
         this.isbn = isbn;
         this.description = description;
     }
 
-    public ComicDTO(Long comicId, String title, double price, String isbn, String description) {
+    public ComicDTO(Long comicId, String title, Double price, Set<String> authors, String isbn,
+                    String description) {
         this.comicId = comicId;
         this.title = title;
         this.price = price;
+        this.authors = authors;
         this.isbn = isbn;
         this.description = description;
     }
@@ -58,7 +62,7 @@ public class ComicDTO {
         return title;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
