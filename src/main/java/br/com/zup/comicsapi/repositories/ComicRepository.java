@@ -15,4 +15,6 @@ public interface ComicRepository extends CrudRepository<Comic, Long> {
 
     Boolean existsByIsbn(String isbn);
 
+    Comic findByIsbn(String isbn);
+
 }
