@@ -30,7 +30,7 @@ public class Comic {
     private String description;
 
     @ManyToMany(mappedBy = "comics")
-    private Set<User> users = new HashSet<>();
+    private Set<User> users;
 
     public Comic() {}
 
