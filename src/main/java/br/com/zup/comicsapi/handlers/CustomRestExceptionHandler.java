@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -14,20 +17,43 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-@ControllerAdvice
+import feign.FeignException;
+
+@RestControllerAdvice
 public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler({FeignException.class})
+    public ResponseEntity<Object> handleFeign(FeignException ex, WebRequest request) {
+        HttpStatus returnStatus = HttpStatus.valueOf(ex.status());
+        String message = "Error when retrieving comic data from Marvel.";
+        Map<String, Object> errors;
+        String error;
+
+        try {
+            errors = new ObjectMapper().readValue(ex.contentUTF8(), HashMap.class);
+            error = (String) errors.getOrDefault("status", "");
+        } catch (JsonProcessingException e) {
+            error = "";
+        }
+
+        ApiErrorList apiErrorList = new ApiErrorList(
+            returnStatus.value(), returnStatus.getReasonPhrase(), message, error
+        );
+
+        return handleExceptionInternal(ex, apiErrorList, new HttpHeaders(), returnStatus, request);
+    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers,
                                                                   HttpStatus status,
                                                                   WebRequest request) {
-        Map<String, String> errors = new HashMap<>();
+        Map<String, Object> errors = new HashMap<>();
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             errors.put(error.getField(), error.getDefaultMessage());
         }

@@ -21,7 +21,12 @@ public class ApiErrorList {
         this.httpValue = httpValue;
         this.httpError = httpError;
         this.message = message;
-        errors = new ArrayList<>(List.of(error));
+
+        if (error.isBlank()) {
+            errors = new ArrayList<>();
+        } else {
+            errors = new ArrayList<>(List.of(error));
+        }
     }
 
     public ApiErrorList(Integer httpValue, String httpError, String message) {
