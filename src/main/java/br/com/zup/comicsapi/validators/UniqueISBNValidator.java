@@ -19,7 +19,7 @@ public class UniqueISBNValidator implements ConstraintValidator<UniqueISBN, Stri
             return false;
         }
 
-        return !comicRepository.existsByIsbn(value.replaceAll("[^0-9]", ""));
+        return !comicRepository.existsByIsbn(value.replaceAll("[^0-9X]", ""));
     }
 
 }
