@@ -3,9 +3,11 @@ package br.com.zup.comicsapi.models;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 
 @Entity
@@ -22,6 +24,9 @@ public class Comic {
     private Set<String> authors = new HashSet<>();
 
     private String isbn;
+
+    @Lob
+    @Column(columnDefinition = "CLOB")
     private String description;
 
     @ManyToMany(mappedBy = "comics")
