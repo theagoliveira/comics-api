@@ -3,6 +3,7 @@ package br.com.zup.comicsapi.controllers;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -15,11 +16,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,6 +30,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import br.com.zup.comicsapi.models.Comic;
 import br.com.zup.comicsapi.models.User;
 import br.com.zup.comicsapi.models.UserDTO;
 import br.com.zup.comicsapi.repositories.UserRepository;
@@ -153,7 +156,29 @@ class UserControllerTest {
     }
 
     @Test
-    @Disabled
-    void userComics() {}
+    void userComics() throws Exception {
+        Set<String> authors = new HashSet<>(List.of("Author 1", "Author 2"));
+        Comic comic1 = new Comic(1L, "Title", 10.0, true, authors, "12345678900", "A comic");
+        Comic comic2 = new Comic(1L, "Title", 10.0, false, authors, "12345678900", "A comic");
+
+        when(userRepository.existsById(anyLong())).thenReturn(true);
+        when(userService.findComicsById(anyLong())).thenReturn(List.of(comic1, comic2));
+
+        mockMvc.perform(get(UserController.BASE_URI + "/" + 1L + "/comics"))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$", hasSize(2)))
+               .andExpect(jsonPath("$.[0].comicId", equalTo(1)))
+               .andExpect(jsonPath("$.[0].title", equalTo("Title")))
+               .andExpect(jsonPath("$.[0].price", equalTo(9.0)))
+               .andExpect(jsonPath("$.[0].discounted", equalTo(true)))
+               .andExpect(jsonPath("$.[0].authors", hasSize(2)))
+               .andExpect(jsonPath("$.[0].isbn", equalTo("12345678900")))
+               .andExpect(jsonPath("$.[0].description", equalTo("A comic")))
+               .andExpect(jsonPath("$.[1].price", equalTo(10.0)))
+               .andExpect(jsonPath("$.[1].discounted", equalTo(false)));
+
+        verify(userRepository).existsById(anyLong());
+        verify(userService).findComicsById(anyLong());
+    }
 
 }
