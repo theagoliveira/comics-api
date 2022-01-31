@@ -13,7 +13,7 @@ public interface ComicRepository extends CrudRepository<Comic, Long> {
     @Override
     List<Comic> findAll();
 
-    Boolean existsByIsbn(String isbn);
+    boolean existsByIsbn(String isbn);
 
     Comic findByIsbn(String isbn);
 

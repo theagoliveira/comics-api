@@ -101,7 +101,7 @@ public class ComicController {
         // Check if the ISBN is valid
         String isbn = comicDto.getIsbn();
 
-        Boolean validIsbn = !comicRepository.existsByIsbn(isbn)
+        boolean validIsbn = !comicRepository.existsByIsbn(isbn)
                 || comicRepository.findByIsbn(isbn).getComicId().equals(comicId);
 
         if (validIsbn) {

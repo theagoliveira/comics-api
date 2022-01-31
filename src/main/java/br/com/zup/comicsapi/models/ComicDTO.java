@@ -17,6 +17,8 @@ public class ComicDTO {
     @NotNull(message = "Price cannot be null.")
     private Double price;
 
+    private boolean discounted;
+
     @NotEmpty(message = "Authors cannot be empty.")
     private Set<String> authors = new HashSet<>();
 
@@ -28,8 +30,9 @@ public class ComicDTO {
 
     public ComicDTO() {}
 
-    public ComicDTO(String title, Double price, Set<String> authors, String isbn,
+    public ComicDTO(Long comicId, String title, Double price, Set<String> authors, String isbn,
                     String description) {
+        this.comicId = comicId;
         this.title = title;
         this.price = price;
         this.authors = authors;
@@ -37,11 +40,12 @@ public class ComicDTO {
         this.description = description;
     }
 
-    public ComicDTO(Long comicId, String title, Double price, Set<String> authors, String isbn,
-                    String description) {
+    public ComicDTO(Long comicId, String title, Double price, boolean discounted,
+                    Set<String> authors, String isbn, String description) {
         this.comicId = comicId;
         this.title = title;
         this.price = price;
+        this.discounted = discounted;
         this.authors = authors;
         this.isbn = isbn;
         this.description = description;
@@ -57,6 +61,10 @@ public class ComicDTO {
 
     public Double getPrice() {
         return price;
+    }
+
+    public boolean getDiscounted() {
+        return discounted;
     }
 
     public Set<String> getAuthors() {

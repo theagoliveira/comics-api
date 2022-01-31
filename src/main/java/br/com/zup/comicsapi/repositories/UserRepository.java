@@ -13,8 +13,9 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Override
     List<User> findAll();
 
-    Boolean existsByEmail(String email);
 
-    Boolean existsByCpf(String cpf);
+    boolean existsByEmail(String email);
+
+    boolean existsByCpf(String cpf);
 
 }

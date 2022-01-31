@@ -18,7 +18,7 @@ public class Comic {
 
     private String title;
     private Double price;
-    private Boolean discounted = false;
+    private boolean discounted = false;
 
     @ElementCollection
     private Set<String> authors = new HashSet<>();
@@ -64,6 +64,10 @@ public class Comic {
         return price;
     }
 
+    public boolean getDiscounted() {
+        return discounted;
+    }
+
     public Set<String> getAuthors() {
         return authors;
     }
@@ -80,8 +84,8 @@ public class Comic {
         return users;
     }
 
-    public Boolean isDiscounted() {
-        return discounted;
+    public void setDiscounted(boolean discounted) {
+        this.discounted = discounted;
     }
 
 }
