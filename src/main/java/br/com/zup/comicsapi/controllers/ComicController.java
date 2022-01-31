@@ -63,7 +63,7 @@ public class ComicController {
                        @RequestParam("userId") Long userId) throws NoSuchAlgorithmException {
         // Check if the user exists
         if (!userRepository.existsById(userId)) {
-            throw new InvalidUserIdException();
+            throw new InvalidUserIdException("Error when creating a new comic.");
         }
 
         // Set up Marvel API authentication
@@ -109,7 +109,7 @@ public class ComicController {
                 comicConverter.toEntity(comicDto), userRepository.findById(userId).get()
             );
         } else {
-            throw new InvalidIsbnException();
+            throw new InvalidIsbnException("Error when creating a new comic.");
         }
     }
 

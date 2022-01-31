@@ -1,9 +1,9 @@
 package br.com.zup.comicsapi.exceptions;
 
-public class InvalidIsbnException extends ComicCreationException {
+public class InvalidIsbnException extends CustomException {
 
-    public InvalidIsbnException() {
-        super();
+    public InvalidIsbnException(String message) {
+        super(message);
     }
 
 }
