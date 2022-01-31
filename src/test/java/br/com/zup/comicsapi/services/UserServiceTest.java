@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -63,20 +64,23 @@ class UserServiceTest {
     @Test
     void findComicsById() {
         Comic comic1 = new Comic(
-            1L, "Title1", 10.0, new HashSet<>(), "12345678900", "A first comic"
+            1L, "Title1", new BigDecimal("10.00"), new HashSet<>(), "12345678900", "A first comic"
         );
         Comic comic2 = new Comic(
-            2L, "Title2", 10.0, new HashSet<>(), "12345678902", "A second comic"
+            2L, "Title2", new BigDecimal("10.00"), new HashSet<>(), "12345678902", "A second comic"
         );
 
         Set<Comic> comics = Set.of(comic1, comic2);
         User user1 = new User(1L, "User1", "user1@example.com", "12345678900", "01/01/1991");
         user1.setComics(comics);
 
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user1));
+        List<Comic> userComics = userService.findComicsById(1L);
+
         Integer dayOfWeekValue = LocalDate.now().getDayOfWeek().getValue();
 
-        String isbn1 = comic1.getIsbn();
-        String isbn2 = comic2.getIsbn();
+        String isbn1 = userComics.get(0).getIsbn();
+        String isbn2 = userComics.get(1).getIsbn();
 
         int lastIsbnDigit1 = isbn1.charAt(isbn1.length() - 1) - 48;
         int lastIsbnDigit2 = isbn2.charAt(isbn2.length() - 1) - 48;
@@ -86,13 +90,10 @@ class UserServiceTest {
         boolean shouldBeDiscounted2 = lastIsbnDigit2 == (2 * dayOfWeekValue - 1)
                 || lastIsbnDigit2 == (2 * dayOfWeekValue - 2);
 
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user1));
-        List<Comic> userComics = userService.findComicsById(1L);
-
         assertNotNull(userComics);
         assertEquals(2, userComics.size());
-        assertEquals(shouldBeDiscounted1, userComics.get(1).getDiscounted());
-        assertEquals(shouldBeDiscounted2, userComics.get(0).getDiscounted());
+        assertEquals(shouldBeDiscounted1, userComics.get(0).getDiscounted());
+        assertEquals(shouldBeDiscounted2, userComics.get(1).getDiscounted());
     }
 
 }

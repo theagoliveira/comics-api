@@ -16,6 +16,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -158,8 +159,12 @@ class UserControllerTest {
     @Test
     void userComics() throws Exception {
         Set<String> authors = new HashSet<>(List.of("Author 1", "Author 2"));
-        Comic comic1 = new Comic(1L, "Title", 10.0, true, authors, "12345678900", "A comic");
-        Comic comic2 = new Comic(1L, "Title", 10.0, false, authors, "12345678900", "A comic");
+        Comic comic1 = new Comic(
+            1L, "Title", new BigDecimal("10.00"), true, authors, "12345678900", "A comic"
+        );
+        Comic comic2 = new Comic(
+            1L, "Title", new BigDecimal("10.00"), false, authors, "12345678900", "A comic"
+        );
 
         when(userRepository.existsById(anyLong())).thenReturn(true);
         when(userService.findComicsById(anyLong())).thenReturn(List.of(comic1, comic2));

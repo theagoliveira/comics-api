@@ -1,13 +1,15 @@
 package br.com.zup.comicsapi.marvel;
 
+import java.math.BigDecimal;
+
 public class MarvelPrice {
 
     private String type;
-    private Double price;
+    private BigDecimal price;
 
     public MarvelPrice() {}
 
-    public MarvelPrice(String type, Double price) {
+    public MarvelPrice(String type, BigDecimal price) {
         this.type = type;
         this.price = price;
     }
@@ -16,7 +18,7 @@ public class MarvelPrice {
         return type;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 

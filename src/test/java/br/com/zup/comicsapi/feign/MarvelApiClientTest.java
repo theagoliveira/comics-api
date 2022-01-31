@@ -2,6 +2,7 @@ package br.com.zup.comicsapi.feign;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -48,7 +49,9 @@ public class MarvelApiClientTest {
                 + "Collects UNCANNY X-MEN #94-131 and ANNUAL #3, and GIANT-SIZE X-MEN #1.\r<br>848 "
                 + "PGS./Rated T+ SUGGESTED FOR TEENS AND UP ...$99.99\r<br>";
         String isbn = "0-7851-2101-3";
-        List<MarvelPrice> prices = new ArrayList<>(List.of(new MarvelPrice("printPrice", 9.99)));
+        List<MarvelPrice> prices = new ArrayList<>(
+            List.of(new MarvelPrice("printPrice", new BigDecimal("9.99")))
+        );
         List<MarvelCreatorsItem> items = new ArrayList<>(
             List.of(
                 new MarvelCreatorsItem("Terry Kevin Austin", "inker"),

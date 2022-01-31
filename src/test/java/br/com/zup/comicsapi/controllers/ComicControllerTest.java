@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -74,7 +75,9 @@ class ComicControllerTest {
 
     @Test
     void createNoTitle() throws Exception {
-        ComicDTO comicDto = new ComicDTO(1L, "", 1.99, AUTHORS, "12345678900", "A comic");
+        ComicDTO comicDto = new ComicDTO(
+            1L, "", new BigDecimal("1.99"), AUTHORS, "12345678900", "A comic"
+        );
 
         when(userRepository.existsById(anyLong())).thenReturn(true);
         when(comicConverter.toDto(any(MarvelObject.class))).thenReturn(comicDto);
@@ -90,7 +93,9 @@ class ComicControllerTest {
 
     @Test
     void createNoIsbn() throws Exception {
-        ComicDTO comicDto = new ComicDTO(1L, "Title1", 1.99, AUTHORS, "", "A comic");
+        ComicDTO comicDto = new ComicDTO(
+            1L, "Title1", new BigDecimal("1.99"), AUTHORS, "", "A comic"
+        );
 
         when(userRepository.existsById(anyLong())).thenReturn(true);
         when(comicConverter.toDto(any(MarvelObject.class))).thenReturn(comicDto);
@@ -106,7 +111,9 @@ class ComicControllerTest {
 
     @Test
     void createNoDescription() throws Exception {
-        ComicDTO comicDto = new ComicDTO(1L, "Title1", 1.99, AUTHORS, "12345678900", "");
+        ComicDTO comicDto = new ComicDTO(
+            1L, "Title1", new BigDecimal("1.99"), AUTHORS, "12345678900", ""
+        );
 
         when(userRepository.existsById(anyLong())).thenReturn(true);
         when(comicConverter.toDto(any(MarvelObject.class))).thenReturn(comicDto);
@@ -141,7 +148,7 @@ class ComicControllerTest {
     @Test
     void createNoAuthors() throws Exception {
         ComicDTO comicDto = new ComicDTO(
-            1L, "Title1", 1.99, new HashSet<>(), "12345678900", "A comic"
+            1L, "Title1", new BigDecimal("1.99"), new HashSet<>(), "12345678900", "A comic"
         );
 
         when(userRepository.existsById(anyLong())).thenReturn(true);
@@ -192,8 +199,12 @@ class ComicControllerTest {
 
     @Test
     void createInvalidIsbn() throws Exception {
-        ComicDTO comicDto = new ComicDTO(1L, "Title1", 1.99, AUTHORS, "12345678900", "A comic");
-        Comic comic = new Comic(1L, "Title1", 1.99, AUTHORS, "12345678900", "A comic");
+        ComicDTO comicDto = new ComicDTO(
+            1L, "Title1", new BigDecimal("1.99"), AUTHORS, "12345678900", "A comic"
+        );
+        Comic comic = new Comic(
+            1L, "Title1", new BigDecimal("1.99"), AUTHORS, "12345678900", "A comic"
+        );
 
         when(comicConverter.toDto(any(MarvelObject.class))).thenReturn(comicDto);
         when(userRepository.existsById(anyLong())).thenReturn(true);
@@ -214,8 +225,12 @@ class ComicControllerTest {
 
     @Test
     void createValid() throws Exception {
-        ComicDTO comicDto = new ComicDTO(100L, "Title1", 1.99, AUTHORS, "12345678900", "A comic");
-        Comic comic = new Comic(100L, "Title1", 1.99, AUTHORS, "12345678900", "A comic");
+        ComicDTO comicDto = new ComicDTO(
+            100L, "Title1", new BigDecimal("1.99"), AUTHORS, "12345678900", "A comic"
+        );
+        Comic comic = new Comic(
+            100L, "Title1", new BigDecimal("1.99"), AUTHORS, "12345678900", "A comic"
+        );
         User user = new User(1L, "User", "user@example.com", "84848518423", "01/01/1991");
 
         when(comicConverter.toDto(any(MarvelObject.class))).thenReturn(comicDto);

@@ -1,5 +1,6 @@
 package br.com.zup.comicsapi.models;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,7 +18,10 @@ public class Comic {
     private Long comicId;
 
     private String title;
-    private Double price;
+
+    @Column(precision = 8, scale = 2)
+    private BigDecimal price;
+
     private boolean discounted = false;
 
     @ElementCollection
@@ -34,7 +38,7 @@ public class Comic {
 
     public Comic() {}
 
-    public Comic(Long comicId, String title, Double price, Set<String> authors, String isbn,
+    public Comic(Long comicId, String title, BigDecimal price, Set<String> authors, String isbn,
                  String description) {
         this.comicId = comicId;
         this.title = title;
@@ -44,8 +48,8 @@ public class Comic {
         this.description = description;
     }
 
-    public Comic(Long comicId, String title, Double price, boolean discounted, Set<String> authors,
-                 String isbn, String description) {
+    public Comic(Long comicId, String title, BigDecimal price, boolean discounted,
+                 Set<String> authors, String isbn, String description) {
         this.comicId = comicId;
         this.title = title;
         this.price = price;
@@ -63,7 +67,7 @@ public class Comic {
         return title;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 

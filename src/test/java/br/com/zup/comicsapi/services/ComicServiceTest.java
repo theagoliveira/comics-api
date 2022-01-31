@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,8 +38,12 @@ class ComicServiceTest {
 
     @Test
     void save() {
-        Comic comicToSave = new Comic(1L, "Title1", 1.99, AUTHORS, "12345678900", "A comic");
-        Comic returnedComic = new Comic(1L, "Title1", 1.99, AUTHORS, "12345678900", "A comic");
+        Comic comicToSave = new Comic(
+            1L, "Title1", new BigDecimal("1.99"), AUTHORS, "12345678900", "A comic"
+        );
+        Comic returnedComic = new Comic(
+            1L, "Title1", new BigDecimal("1.99"), AUTHORS, "12345678900", "A comic"
+        );
         User user = new User(1L, "User", "user@example.com", "12345678900", "01/01/1991");
 
         when(comicRepository.save(any(Comic.class))).thenReturn(returnedComic);

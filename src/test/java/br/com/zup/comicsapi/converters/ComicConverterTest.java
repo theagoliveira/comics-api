@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -54,14 +55,16 @@ public class ComicConverterTest {
     @Test
     void convertToDtoNotDiscounted() {
         Set<String> authors = new HashSet<>(List.of("Author 1", "Author 2"));
-        Comic comic = new Comic(1L, "Title", 1.99, false, authors, "12345678900", "A comic");
+        Comic comic = new Comic(
+            1L, "Title", new BigDecimal("1.99"), false, authors, "12345678900", "A comic"
+        );
 
         ComicDTO comicDto = comicConverter.toDto(comic);
 
         assertNotNull(comicDto);
         assertEquals(1L, comicDto.getComicId());
         assertEquals("Title", comicDto.getTitle());
-        assertEquals(1.99, comicDto.getPrice());
+        assertEquals(new BigDecimal("1.99"), comicDto.getPrice());
         assertEquals(false, comicDto.getDiscounted());
         assertEquals(authors, comicDto.getAuthors());
         assertEquals("12345678900", comicDto.getIsbn());
@@ -71,14 +74,16 @@ public class ComicConverterTest {
     @Test
     void convertToDtoDiscounted() {
         Set<String> authors = new HashSet<>(List.of("Author 1", "Author 2"));
-        Comic comic = new Comic(1L, "Title", 10.0, true, authors, "12345678900", "A comic");
+        Comic comic = new Comic(
+            1L, "Title", new BigDecimal("10.00"), true, authors, "12345678900", "A comic"
+        );
 
         ComicDTO comicDto = comicConverter.toDto(comic);
 
         assertNotNull(comicDto);
         assertEquals(1L, comicDto.getComicId());
         assertEquals("Title", comicDto.getTitle());
-        assertEquals(9.0, comicDto.getPrice());
+        assertEquals(new BigDecimal("9.00"), comicDto.getPrice());
         assertEquals(true, comicDto.getDiscounted());
         assertEquals(authors, comicDto.getAuthors());
         assertEquals("12345678900", comicDto.getIsbn());
@@ -88,14 +93,16 @@ public class ComicConverterTest {
     @Test
     void convertToEntity() {
         Set<String> authors = new HashSet<>(List.of("Author 1", "Author 2"));
-        ComicDTO comicDto = new ComicDTO(1L, "Title", 1.99, authors, "12345678900", "A comic");
+        ComicDTO comicDto = new ComicDTO(
+            1L, "Title", new BigDecimal("1.99"), authors, "12345678900", "A comic"
+        );
 
         Comic comic = comicConverter.toEntity(comicDto);
 
         assertNotNull(comic);
         assertEquals(1L, comic.getComicId());
         assertEquals("Title", comic.getTitle());
-        assertEquals(1.99, comic.getPrice());
+        assertEquals(new BigDecimal("1.99"), comic.getPrice());
         assertEquals(authors, comic.getAuthors());
         assertEquals("12345678900", comic.getIsbn());
         assertEquals("A comic", comic.getDescription());
@@ -182,7 +189,9 @@ public class ComicConverterTest {
                 + "Collects UNCANNY X-MEN #94-131 and ANNUAL #3, and GIANT-SIZE X-MEN #1.\r<br>848 "
                 + "PGS./Rated T+ SUGGESTED FOR TEENS AND UP ...$99.99\r<br>";
         String isbn = "0-7851-2101-3";
-        List<MarvelPrice> prices = new ArrayList<>(List.of(new MarvelPrice("printPrice", 9.99)));
+        List<MarvelPrice> prices = new ArrayList<>(
+            List.of(new MarvelPrice("printPrice", new BigDecimal("9.99")))
+        );
         List<MarvelCreatorsItem> items = new ArrayList<>(
             List.of(
                 new MarvelCreatorsItem("Terry Kevin Austin", "inker"),
@@ -210,7 +219,7 @@ public class ComicConverterTest {
 
         assertEquals(comicId, comicDto.getComicId());
         assertEquals(title, comicDto.getTitle());
-        assertEquals(9.99, comicDto.getPrice());
+        assertEquals(new BigDecimal("9.99"), comicDto.getPrice());
         assertEquals(isbn, comicDto.getIsbn());
         assertEquals(description, comicDto.getDescription());
         assertEquals(6, comicDto.getAuthors().size());

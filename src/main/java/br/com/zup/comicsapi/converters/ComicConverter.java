@@ -1,5 +1,7 @@
 package br.com.zup.comicsapi.converters;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,10 +29,10 @@ public class ComicConverter {
             authors = new HashSet<>(authors);
         }
 
-        Double price = comic.getPrice();
+        BigDecimal price = comic.getPrice();
 
         if (comic.getDiscounted()) {
-            price *= 0.9;
+            price = price.multiply(new BigDecimal("0.90")).setScale(2, RoundingMode.HALF_EVEN);
         }
 
         return new ComicDTO(
@@ -49,7 +51,7 @@ public class ComicConverter {
         MarvelResult marvelResult = marvelObject.getData().getResults().get(0);
 
         List<MarvelPrice> prices = marvelResult.getPrices();
-        Double printPrice = null;
+        BigDecimal printPrice = null;
         if (prices != null && !prices.isEmpty()) {
             for (MarvelPrice price : prices) {
                 if (price.getType().equals("printPrice")) {

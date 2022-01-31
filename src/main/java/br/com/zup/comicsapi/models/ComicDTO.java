@@ -1,5 +1,6 @@
 package br.com.zup.comicsapi.models;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ public class ComicDTO {
     private String title;
 
     @NotNull(message = "Price cannot be null.")
-    private Double price;
+    private BigDecimal price;
 
     private boolean discounted;
 
@@ -30,7 +31,7 @@ public class ComicDTO {
 
     public ComicDTO() {}
 
-    public ComicDTO(Long comicId, String title, Double price, Set<String> authors, String isbn,
+    public ComicDTO(Long comicId, String title, BigDecimal price, Set<String> authors, String isbn,
                     String description) {
         this.comicId = comicId;
         this.title = title;
@@ -40,7 +41,7 @@ public class ComicDTO {
         this.description = description;
     }
 
-    public ComicDTO(Long comicId, String title, Double price, boolean discounted,
+    public ComicDTO(Long comicId, String title, BigDecimal price, boolean discounted,
                     Set<String> authors, String isbn, String description) {
         this.comicId = comicId;
         this.title = title;
@@ -59,7 +60,7 @@ public class ComicDTO {
         return title;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
