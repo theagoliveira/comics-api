@@ -27,9 +27,15 @@ public class ComicConverter {
             authors = new HashSet<>(authors);
         }
 
+        Double price = comic.getPrice();
+
+        if (comic.getDiscounted()) {
+            price *= 0.9;
+        }
+
         return new ComicDTO(
-            comic.getComicId(), comic.getTitle(), comic.getPrice(), authors, comic.getIsbn(),
-            comic.getDescription()
+            comic.getComicId(), comic.getTitle(), price, comic.getDiscounted(), authors,
+            comic.getIsbn(), comic.getDescription()
         );
     }
 

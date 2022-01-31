@@ -34,7 +34,9 @@ public class Comic {
 
     public Comic() {}
 
-    public Comic(String title, Double price, Set<String> authors, String isbn, String description) {
+    public Comic(Long comicId, String title, Double price, Set<String> authors, String isbn,
+                 String description) {
+        this.comicId = comicId;
         this.title = title;
         this.price = price;
         this.authors = authors;
@@ -42,11 +44,12 @@ public class Comic {
         this.description = description;
     }
 
-    public Comic(Long comicId, String title, Double price, Set<String> authors, String isbn,
-                 String description) {
+    public Comic(Long comicId, String title, Double price, boolean discounted, Set<String> authors,
+                 String isbn, String description) {
         this.comicId = comicId;
         this.title = title;
         this.price = price;
+        this.discounted = discounted;
         this.authors = authors;
         this.isbn = isbn;
         this.description = description;
