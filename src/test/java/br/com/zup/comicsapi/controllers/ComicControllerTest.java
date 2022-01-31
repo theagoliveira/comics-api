@@ -1,19 +1,13 @@
 package br.com.zup.comicsapi.controllers;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -242,42 +236,6 @@ class ComicControllerTest {
         verify(comicService).save(any(Comic.class), any(User.class));
         verify(comicConverter).toEntity(any(ComicDTO.class));
         verify(userRepository).findById(anyLong());
-    }
-
-    @Test
-    void index() throws Exception {
-        Comic comic1 = new Comic(1L, "Title1", 1.99, AUTHORS, "12345678900", "A comic");
-        ComicDTO comic1Dto = new ComicDTO(1L, "Title1", 1.99, AUTHORS, "12345678900", "A comic");
-
-        when(comicService.findAll()).thenReturn(List.of(comic1, comic1));
-        when(comicConverter.toDto(any(Comic.class))).thenReturn(comic1Dto);
-
-        mockMvc.perform(get(ComicController.BASE_URI))
-               .andExpect(status().isOk())
-               .andExpect(jsonPath("$", hasSize(2)))
-               .andExpect(jsonPath("$.[0].comicId", equalTo(1)))
-               .andExpect(jsonPath("$.[0].title", equalTo("Title1")))
-               .andExpect(jsonPath("$.[0].price", equalTo(1.99)))
-               .andExpect(jsonPath("$.[0].isbn", equalTo("12345678900")))
-               .andExpect(jsonPath("$.[0].description", equalTo("A comic")));
-
-        verify(comicService).findAll();
-        verify(comicConverter, times(2)).toDto(any(Comic.class));
-    }
-
-    @Test
-    void deleteNotSupported() throws Exception {
-        mockMvc.perform(delete(ComicController.BASE_URI)).andExpect(status().isMethodNotAllowed());
-    }
-
-    @Test
-    void putNotSupported() throws Exception {
-        mockMvc.perform(put(ComicController.BASE_URI)).andExpect(status().isMethodNotAllowed());
-    }
-
-    @Test
-    void patchNotSupported() throws Exception {
-        mockMvc.perform(patch(ComicController.BASE_URI)).andExpect(status().isMethodNotAllowed());
     }
 
 }

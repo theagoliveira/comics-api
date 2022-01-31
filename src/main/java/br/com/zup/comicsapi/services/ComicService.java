@@ -1,7 +1,5 @@
 package br.com.zup.comicsapi.services;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import br.com.zup.comicsapi.models.Comic;
@@ -27,10 +25,6 @@ public class ComicService {
         userRepository.save(user);
 
         return savedComic;
-    }
-
-    public List<Comic> findAll() {
-        return comicRepository.findAll();
     }
 
 }

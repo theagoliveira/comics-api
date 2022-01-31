@@ -4,10 +4,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -17,7 +15,6 @@ import javax.validation.ValidatorFactory;
 import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -111,15 +108,6 @@ public class ComicController {
         } else {
             throw new InvalidIsbnException("Error when creating a new comic.");
         }
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping
-    public List<ComicDTO> index() {
-        return comicService.findAll()
-                           .stream()
-                           .map(comicConverter::toDto)
-                           .collect(Collectors.toList());
     }
 
 }

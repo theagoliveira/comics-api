@@ -6,7 +6,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -49,20 +48,6 @@ class ComicServiceTest {
         assertEquals(1L, savedComic.getComicId());
         verify(comicRepository).save(any(Comic.class));
         verify(userRepository).save(any(User.class));
-    }
-
-    @Test
-    void findAll() {
-        Comic comic1 = new Comic(1L, "Title1", 1.99, AUTHORS, "12345678900", "A comic");
-        Comic comic2 = new Comic(2L, "Title2", 2.99, AUTHORS, "12345678900", "A comic");
-        List<Comic> returnedComics = new ArrayList<>(List.of(comic1, comic2));
-
-        when(comicRepository.findAll()).thenReturn(returnedComics);
-        List<Comic> comics = comicService.findAll();
-
-        assertNotNull(comics);
-        assertEquals(2, comics.size());
-        verify(comicRepository).findAll();
     }
 
 }
