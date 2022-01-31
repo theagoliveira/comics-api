@@ -32,17 +32,17 @@ import feign.FeignException;
 @RestControllerAdvice
 public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 
-    // @ExceptionHandler({Exception.class})
-    // public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
-    // HttpStatus returnStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-    // String message = "An unexpected error occurred.";
+    @ExceptionHandler({Exception.class})
+    public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
+        HttpStatus returnStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        String message = "An unexpected error occurred.";
 
-    // ApiErrorList apiErrorList = new ApiErrorList(
-    // returnStatus.value(), returnStatus.getReasonPhrase(), message
-    // );
+        ApiErrorList apiErrorList = new ApiErrorList(
+            returnStatus.value(), returnStatus.getReasonPhrase(), message
+        );
 
-    // return handleExceptionInternal(ex, apiErrorList, new HttpHeaders(), returnStatus, request);
-    // }
+        return handleExceptionInternal(ex, apiErrorList, new HttpHeaders(), returnStatus, request);
+    }
 
     @ExceptionHandler({FeignException.class})
     public ResponseEntity<Object> handleFeign(FeignException ex, WebRequest request) {
