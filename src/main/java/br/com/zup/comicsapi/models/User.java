@@ -67,4 +67,8 @@ public class User {
         return comics;
     }
 
+    public void setComics(Set<Comic> comics) {
+        this.comics = comics;
+    }
+
 }

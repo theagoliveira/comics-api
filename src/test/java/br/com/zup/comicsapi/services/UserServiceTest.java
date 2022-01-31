@@ -11,6 +11,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -59,7 +61,7 @@ class UserServiceTest {
     }
 
     @Test
-    void findComicsByUserId() {
+    void findComicsById() {
         Comic comic1 = new Comic(
             1L, "Title1", 10.0, new HashSet<>(), "12345678900", "A first comic"
         );
@@ -67,25 +69,30 @@ class UserServiceTest {
             2L, "Title2", 10.0, new HashSet<>(), "12345678902", "A second comic"
         );
 
+        Set<Comic> comics = Set.of(comic1, comic2);
+        User user1 = new User(1L, "User1", "user1@example.com", "12345678900", "01/01/1991");
+        user1.setComics(comics);
+
+        Integer dayOfWeekValue = LocalDate.now().getDayOfWeek().getValue();
+
         String isbn1 = comic1.getIsbn();
         String isbn2 = comic2.getIsbn();
+
         int lastIsbnDigit1 = isbn1.charAt(isbn1.length() - 1) - 48;
         int lastIsbnDigit2 = isbn2.charAt(isbn2.length() - 1) - 48;
-        Integer dayOfWeekValue = LocalDate.now().getDayOfWeek().getValue();
 
         boolean shouldBeDiscounted1 = lastIsbnDigit1 == (2 * dayOfWeekValue - 1)
                 || lastIsbnDigit1 == (2 * dayOfWeekValue - 2);
         boolean shouldBeDiscounted2 = lastIsbnDigit2 == (2 * dayOfWeekValue - 1)
                 || lastIsbnDigit2 == (2 * dayOfWeekValue - 2);
 
-        when(userRepository.findComicsByUserId(anyLong())).thenReturn(List.of(comic1, comic2));
-        List<Comic> userComics = userService.findComicsByUserId(1L);
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user1));
+        List<Comic> userComics = userService.findComicsById(1L);
 
         assertNotNull(userComics);
         assertEquals(2, userComics.size());
-        assertEquals(shouldBeDiscounted1, userComics.get(0).getDiscounted());
-        assertEquals(shouldBeDiscounted2, userComics.get(1).getDiscounted());
-        verify(userRepository).findComicsByUserId(anyLong());
+        assertEquals(shouldBeDiscounted1, userComics.get(1).getDiscounted());
+        assertEquals(shouldBeDiscounted2, userComics.get(0).getDiscounted());
     }
 
 }

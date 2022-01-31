@@ -14,8 +14,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Override
     List<User> findAll();
 
-    List<Comic> findComicsByUserId(Long id);
-
     boolean existsByEmail(String email);
 
     boolean existsByCpf(String cpf);

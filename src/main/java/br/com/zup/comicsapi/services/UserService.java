@@ -1,7 +1,9 @@
 package br.com.zup.comicsapi.services;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -26,8 +28,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public List<Comic> findComicsByUserId(Long userId) {
-        List<Comic> userComics = userRepository.findComicsByUserId(userId);
+    public List<Comic> findComicsById(Long userId) {
+        Set<Comic> userComics = userRepository.findById(userId).get().getComics();
         Integer dayOfWeekValue = LocalDate.now().getDayOfWeek().getValue();
 
         for (Comic comic : userComics) {
@@ -39,7 +41,7 @@ public class UserService {
             comic.setDiscounted(shouldBeDiscounted);
         }
 
-        return userComics;
+        return new ArrayList<>(userComics);
     }
 
 }
