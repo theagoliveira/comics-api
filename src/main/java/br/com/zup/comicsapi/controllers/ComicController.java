@@ -27,7 +27,7 @@ import br.com.zup.comicsapi.exceptions.InvalidIsbnException;
 import br.com.zup.comicsapi.exceptions.InvalidUserIdException;
 import br.com.zup.comicsapi.feign.MarvelApiClient;
 import br.com.zup.comicsapi.marvel.MarvelResponse;
-import br.com.zup.comicsapi.models.ComicDTO;
+import br.com.zup.comicsapi.models.Comic;
 import br.com.zup.comicsapi.repositories.ComicRepository;
 import br.com.zup.comicsapi.repositories.UserRepository;
 import br.com.zup.comicsapi.services.ComicService;
@@ -81,13 +81,13 @@ public class ComicController {
             comicId, timestamp, pubKey, hash
         );
 
-        // Convert the result to a ComicDTO
-        ComicDTO comicDto = comicConverter.toDto(marvelResponse);
+        // Convert the result to a Comic
+        Comic comic = comicConverter.toEntity(marvelResponse);
 
-        // Validate the ComicDTO
+        // Validate the Comic
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Set<ConstraintViolation<ComicDTO>> violations = validator.validate(comicDto);
+        Set<ConstraintViolation<Comic>> violations = validator.validate(comic);
         if (!violations.isEmpty()) {
             String errorWord = violations.size() == 1 ? "error" : "errors";
             String message = "Validation failed with " + violations.size() + " " + errorWord + ".";
@@ -95,15 +95,13 @@ public class ComicController {
         }
 
         // Check if the ISBN is valid
-        String isbn = comicDto.getIsbn();
+        String isbn = comic.getIsbn();
 
         boolean validIsbn = !comicRepository.existsByIsbn(isbn)
                 || comicRepository.findByIsbn(isbn).getComicId().equals(comicId);
 
         if (validIsbn) {
-            comicService.save(
-                comicConverter.toEntity(comicDto), userRepository.findById(userId).get()
-            );
+            comicService.save(comic, userRepository.findById(userId).get());
         } else {
             throw new InvalidIsbnException("Error when creating a new comic.");
         }

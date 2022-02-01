@@ -10,6 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Comic {
@@ -17,18 +20,23 @@ public class Comic {
     @Id
     private Long comicId;
 
+    @NotBlank(message = "Title cannot be blank.")
     private String title;
 
+    @NotNull(message = "Price cannot be null.")
     @Column(precision = 8, scale = 2)
     private BigDecimal price;
 
     private boolean discounted = false;
 
+    @NotEmpty(message = "Authors cannot be empty.")
     @ElementCollection
     private Set<String> authors = new HashSet<>();
 
+    @NotBlank(message = "ISBN cannot be blank.")
     private String isbn;
 
+    @NotBlank(message = "Description cannot be blank.")
     @Lob
     @Column(columnDefinition = "CLOB")
     private String description;
