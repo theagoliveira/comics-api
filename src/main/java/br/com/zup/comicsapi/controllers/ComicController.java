@@ -4,7 +4,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
-import java.util.Map;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -14,6 +13,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import javax.xml.bind.DatatypeConverter;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,6 +44,12 @@ public class ComicController {
     private final MarvelApiClient marvelApiClient;
     private final UserRepository userRepository;
 
+    @Value("${marvel.api.public.key}")
+    private String pubKey;
+
+    @Value("${marvel.api.private.key}")
+    private String privKey;
+
     public ComicController(ComicService comicService, ComicConverter comicConverter,
                            ComicRepository comicRepository, MarvelApiClient marvelApiClient,
                            UserRepository userRepository) {
@@ -63,23 +69,16 @@ public class ComicController {
             throw new InvalidUserIdException("Error when creating a new comic.");
         }
 
-        // Set up Marvel API authentication
-        Map<String, String> env = System.getenv();
-
-        String apiPubKey = env.get("MARVEL_API_PUBLIC_KEY");
-        String apiPrivKey = env.get("MARVEL_API_PRIVATE_KEY");
         String timestamp = String.valueOf(Instant.now().getEpochSecond());
 
-        byte[] bytesOfMessage = (timestamp + apiPrivKey + apiPubKey).getBytes(
-            StandardCharsets.UTF_8
-        );
+        byte[] bytesOfMessage = (timestamp + privKey + pubKey).getBytes(StandardCharsets.UTF_8);
         MessageDigest md = MessageDigest.getInstance("MD5");
         byte[] bytesOfDigest = md.digest(bytesOfMessage);
         String hash = DatatypeConverter.printHexBinary(bytesOfDigest).toLowerCase();
 
         // Get the result from Marvel API
         MarvelResponse marvelResponse = marvelApiClient.getComicByComicId(
-            comicId, timestamp, apiPubKey, hash
+            comicId, timestamp, pubKey, hash
         );
 
         // Convert the result to a ComicDTO
