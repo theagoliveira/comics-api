@@ -26,7 +26,7 @@ import br.com.zup.comicsapi.converters.ComicConverter;
 import br.com.zup.comicsapi.exceptions.InvalidIsbnException;
 import br.com.zup.comicsapi.exceptions.InvalidUserIdException;
 import br.com.zup.comicsapi.feign.MarvelApiClient;
-import br.com.zup.comicsapi.marvel.MarvelObject;
+import br.com.zup.comicsapi.marvel.MarvelResponse;
 import br.com.zup.comicsapi.models.ComicDTO;
 import br.com.zup.comicsapi.repositories.ComicRepository;
 import br.com.zup.comicsapi.repositories.UserRepository;
@@ -78,12 +78,12 @@ public class ComicController {
         String hash = DatatypeConverter.printHexBinary(bytesOfDigest).toLowerCase();
 
         // Get the result from Marvel API
-        MarvelObject marvelObject = marvelApiClient.getComicByComicId(
+        MarvelResponse marvelResponse = marvelApiClient.getComicByComicId(
             comicId, timestamp, apiPubKey, hash
         );
 
         // Convert the result to a ComicDTO
-        ComicDTO comicDto = comicConverter.toDto(marvelObject);
+        ComicDTO comicDto = comicConverter.toDto(marvelResponse);
 
         // Validate the ComicDTO
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();

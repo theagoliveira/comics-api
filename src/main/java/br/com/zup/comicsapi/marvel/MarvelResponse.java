@@ -1,12 +1,12 @@
 package br.com.zup.comicsapi.marvel;
 
-public class MarvelObject {
+public class MarvelResponse {
 
     private MarvelData data;
 
-    public MarvelObject() {}
+    public MarvelResponse() {}
 
-    public MarvelObject(MarvelData data) {
+    public MarvelResponse(MarvelData data) {
         this.data = data;
     }
 

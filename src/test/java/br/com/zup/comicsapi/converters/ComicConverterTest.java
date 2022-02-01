@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 import br.com.zup.comicsapi.marvel.MarvelCreators;
 import br.com.zup.comicsapi.marvel.MarvelCreatorsItem;
 import br.com.zup.comicsapi.marvel.MarvelData;
-import br.com.zup.comicsapi.marvel.MarvelObject;
+import br.com.zup.comicsapi.marvel.MarvelResponse;
 import br.com.zup.comicsapi.marvel.MarvelPrice;
 import br.com.zup.comicsapi.marvel.MarvelResult;
 import br.com.zup.comicsapi.models.Comic;
@@ -109,31 +109,31 @@ public class ComicConverterTest {
     }
 
     @Test
-    void convertNullMarvelObjectParameterToDto() {
-        assertNull(comicConverter.toDto((MarvelObject) null));
+    void convertNullmarvelResponseParameterToDto() {
+        assertNull(comicConverter.toDto((MarvelResponse) null));
     }
 
     @Test
     void convertNullMarvelDataParameterToDto() {
-        assertNull(comicConverter.toDto(new MarvelObject()));
+        assertNull(comicConverter.toDto(new MarvelResponse()));
     }
 
     @Test
     void convertNullMarvelResultParameterToDto() {
-        assertNull(comicConverter.toDto(new MarvelObject(new MarvelData())));
+        assertNull(comicConverter.toDto(new MarvelResponse(new MarvelData())));
     }
 
     @Test
     void convertEmptyMarvelResultListParameterToDto() {
         assertNull(
-            comicConverter.toDto(new MarvelObject(new MarvelData(new ArrayList<MarvelResult>())))
+            comicConverter.toDto(new MarvelResponse(new MarvelData(new ArrayList<MarvelResult>())))
         );
     }
 
     @Test
     void convertEmptyMarvelResultParameterToDto() {
         ComicDTO comicDto = comicConverter.toDto(
-            new MarvelObject(
+            new MarvelResponse(
                 new MarvelData(new ArrayList<MarvelResult>(List.of(new MarvelResult())))
             )
         );
@@ -149,7 +149,7 @@ public class ComicConverterTest {
     @Test
     void convertBlankMarvelResultParameterToDto() {
         ComicDTO comicDto = comicConverter.toDto(
-            new MarvelObject(
+            new MarvelResponse(
                 new MarvelData(
                     new ArrayList<MarvelResult>(
                         List.of(
@@ -203,7 +203,7 @@ public class ComicConverterTest {
             )
         );
 
-        MarvelObject obj = new MarvelObject(
+        MarvelResponse obj = new MarvelResponse(
             new MarvelData(
                 new ArrayList<MarvelResult>(
                     List.of(

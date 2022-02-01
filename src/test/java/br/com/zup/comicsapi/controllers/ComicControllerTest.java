@@ -25,7 +25,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import br.com.zup.comicsapi.converters.ComicConverter;
-import br.com.zup.comicsapi.marvel.MarvelObject;
+import br.com.zup.comicsapi.marvel.MarvelResponse;
 import br.com.zup.comicsapi.models.Comic;
 import br.com.zup.comicsapi.models.ComicDTO;
 import br.com.zup.comicsapi.models.User;
@@ -69,7 +69,7 @@ class ComicControllerTest {
                .andExpect(jsonPath("$.errors[0]", equalTo("We couldn't find that comic_issue")));
 
         verify(userRepository).existsById(anyLong());
-        verify(comicConverter, never()).toDto(any(MarvelObject.class));
+        verify(comicConverter, never()).toDto(any(MarvelResponse.class));
         verify(comicService, never()).save(any(Comic.class), any(User.class));
     }
 
@@ -80,14 +80,14 @@ class ComicControllerTest {
         );
 
         when(userRepository.existsById(anyLong())).thenReturn(true);
-        when(comicConverter.toDto(any(MarvelObject.class))).thenReturn(comicDto);
+        when(comicConverter.toDto(any(MarvelResponse.class))).thenReturn(comicDto);
 
         mockMvc.perform(post(ComicController.BASE_URI + "/" + 100L).param("userId", "1"))
                .andExpect(status().isBadRequest())
                .andExpect(jsonPath("$.errors.title", equalTo("Title cannot be blank.")));
 
         verify(userRepository).existsById(anyLong());
-        verify(comicConverter).toDto(any(MarvelObject.class));
+        verify(comicConverter).toDto(any(MarvelResponse.class));
         verify(comicService, never()).save(any(Comic.class), any(User.class));
     }
 
@@ -98,14 +98,14 @@ class ComicControllerTest {
         );
 
         when(userRepository.existsById(anyLong())).thenReturn(true);
-        when(comicConverter.toDto(any(MarvelObject.class))).thenReturn(comicDto);
+        when(comicConverter.toDto(any(MarvelResponse.class))).thenReturn(comicDto);
 
         mockMvc.perform(post(ComicController.BASE_URI + "/" + 100L).param("userId", "1"))
                .andExpect(status().isBadRequest())
                .andExpect(jsonPath("$.errors.isbn", equalTo("ISBN cannot be blank.")));
 
         verify(userRepository).existsById(anyLong());
-        verify(comicConverter).toDto(any(MarvelObject.class));
+        verify(comicConverter).toDto(any(MarvelResponse.class));
         verify(comicService, never()).save(any(Comic.class), any(User.class));
     }
 
@@ -116,7 +116,7 @@ class ComicControllerTest {
         );
 
         when(userRepository.existsById(anyLong())).thenReturn(true);
-        when(comicConverter.toDto(any(MarvelObject.class))).thenReturn(comicDto);
+        when(comicConverter.toDto(any(MarvelResponse.class))).thenReturn(comicDto);
 
         mockMvc.perform(post(ComicController.BASE_URI + "/" + 100L).param("userId", "1"))
                .andExpect(status().isBadRequest())
@@ -125,7 +125,7 @@ class ComicControllerTest {
                );
 
         verify(userRepository).existsById(anyLong());
-        verify(comicConverter).toDto(any(MarvelObject.class));
+        verify(comicConverter).toDto(any(MarvelResponse.class));
         verify(comicService, never()).save(any(Comic.class), any(User.class));
     }
 
@@ -134,14 +134,14 @@ class ComicControllerTest {
         ComicDTO comicDto = new ComicDTO(1L, "Title1", null, AUTHORS, "12345678900", "A comic");
 
         when(userRepository.existsById(anyLong())).thenReturn(true);
-        when(comicConverter.toDto(any(MarvelObject.class))).thenReturn(comicDto);
+        when(comicConverter.toDto(any(MarvelResponse.class))).thenReturn(comicDto);
 
         mockMvc.perform(post(ComicController.BASE_URI + "/" + 100L).param("userId", "1"))
                .andExpect(status().isBadRequest())
                .andExpect(jsonPath("$.errors.price", equalTo("Price cannot be null.")));
 
         verify(userRepository).existsById(anyLong());
-        verify(comicConverter).toDto(any(MarvelObject.class));
+        verify(comicConverter).toDto(any(MarvelResponse.class));
         verify(comicService, never()).save(any(Comic.class), any(User.class));
     }
 
@@ -152,14 +152,14 @@ class ComicControllerTest {
         );
 
         when(userRepository.existsById(anyLong())).thenReturn(true);
-        when(comicConverter.toDto(any(MarvelObject.class))).thenReturn(comicDto);
+        when(comicConverter.toDto(any(MarvelResponse.class))).thenReturn(comicDto);
 
         mockMvc.perform(post(ComicController.BASE_URI + "/" + 100L).param("userId", "1"))
                .andExpect(status().isBadRequest())
                .andExpect(jsonPath("$.errors.authors", equalTo("Authors cannot be empty.")));
 
         verify(userRepository).existsById(anyLong());
-        verify(comicConverter).toDto(any(MarvelObject.class));
+        verify(comicConverter).toDto(any(MarvelResponse.class));
         verify(comicService, never()).save(any(Comic.class), any(User.class));
     }
 
@@ -168,7 +168,7 @@ class ComicControllerTest {
         ComicDTO comicDto = new ComicDTO(1L, "", null, new HashSet<>(), "", "");
 
         when(userRepository.existsById(anyLong())).thenReturn(true);
-        when(comicConverter.toDto(any(MarvelObject.class))).thenReturn(comicDto);
+        when(comicConverter.toDto(any(MarvelResponse.class))).thenReturn(comicDto);
 
         mockMvc.perform(post(ComicController.BASE_URI + "/" + 100L).param("userId", "1"))
                .andExpect(status().isBadRequest())
@@ -179,7 +179,7 @@ class ComicControllerTest {
                .andExpect(jsonPath("$.errors.authors", equalTo("Authors cannot be empty.")));
 
         verify(userRepository).existsById(anyLong());
-        verify(comicConverter).toDto(any(MarvelObject.class));
+        verify(comicConverter).toDto(any(MarvelResponse.class));
         verify(comicService, never()).save(any(Comic.class), any(User.class));
     }
 
@@ -193,7 +193,7 @@ class ComicControllerTest {
                .andExpect(jsonPath("$.errors[0]", equalTo("The provided userId is invalid.")));
 
         verify(userRepository).existsById(anyLong());
-        verify(comicConverter, never()).toDto(any(MarvelObject.class));
+        verify(comicConverter, never()).toDto(any(MarvelResponse.class));
         verify(comicService, never()).save(any(Comic.class), any(User.class));
     }
 
@@ -206,7 +206,7 @@ class ComicControllerTest {
             1L, "Title1", new BigDecimal("1.99"), AUTHORS, "12345678900", "A comic"
         );
 
-        when(comicConverter.toDto(any(MarvelObject.class))).thenReturn(comicDto);
+        when(comicConverter.toDto(any(MarvelResponse.class))).thenReturn(comicDto);
         when(userRepository.existsById(anyLong())).thenReturn(true);
         when(comicRepository.existsByIsbn(anyString())).thenReturn(true);
         when(comicRepository.findByIsbn(anyString())).thenReturn(comic);
@@ -216,7 +216,7 @@ class ComicControllerTest {
                .andExpect(jsonPath("$.message", equalTo("Error when creating a new comic.")))
                .andExpect(jsonPath("$.errors[0]", equalTo("The provided ISBN is invalid.")));
 
-        verify(comicConverter).toDto(any(MarvelObject.class));
+        verify(comicConverter).toDto(any(MarvelResponse.class));
         verify(userRepository).existsById(anyLong());
         verify(comicRepository).existsByIsbn(anyString());
         verify(comicRepository).findByIsbn(anyString());
@@ -233,7 +233,7 @@ class ComicControllerTest {
         );
         User user = new User(1L, "User", "user@example.com", "84848518423", "01/01/1991");
 
-        when(comicConverter.toDto(any(MarvelObject.class))).thenReturn(comicDto);
+        when(comicConverter.toDto(any(MarvelResponse.class))).thenReturn(comicDto);
         when(userRepository.existsById(anyLong())).thenReturn(true);
         when(comicRepository.existsByIsbn(anyString())).thenReturn(true);
         when(comicRepository.findByIsbn(anyString())).thenReturn(comic);
@@ -244,7 +244,7 @@ class ComicControllerTest {
         mockMvc.perform(post(ComicController.BASE_URI + "/" + 100L).param("userId", "1"))
                .andExpect(status().isCreated());
 
-        verify(comicConverter).toDto(any(MarvelObject.class));
+        verify(comicConverter).toDto(any(MarvelResponse.class));
         verify(userRepository).existsById(anyLong());
         verify(comicRepository).existsByIsbn(anyString());
         verify(comicRepository).findByIsbn(anyString());

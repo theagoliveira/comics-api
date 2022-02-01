@@ -20,7 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import br.com.zup.comicsapi.marvel.MarvelCreators;
 import br.com.zup.comicsapi.marvel.MarvelCreatorsItem;
 import br.com.zup.comicsapi.marvel.MarvelData;
-import br.com.zup.comicsapi.marvel.MarvelObject;
+import br.com.zup.comicsapi.marvel.MarvelResponse;
 import br.com.zup.comicsapi.marvel.MarvelPrice;
 import br.com.zup.comicsapi.marvel.MarvelResult;
 
@@ -63,7 +63,7 @@ public class MarvelApiClientTest {
             )
         );
 
-        MarvelObject obj = new MarvelObject(
+        MarvelResponse obj = new MarvelResponse(
             new MarvelData(
                 new ArrayList<MarvelResult>(
                     List.of(
@@ -89,7 +89,7 @@ public class MarvelApiClientTest {
         String hash = DatatypeConverter.printHexBinary(bytesOfDigest).toLowerCase();
 
         // Get result
-        MarvelObject feignObj = marvelApiClient.getComicByComicId(
+        MarvelResponse feignObj = marvelApiClient.getComicByComicId(
             comicId, timestamp, apiPublicKey, hash
         );
 

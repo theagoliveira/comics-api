@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import br.com.zup.comicsapi.marvel.MarvelCreators;
 import br.com.zup.comicsapi.marvel.MarvelCreatorsItem;
-import br.com.zup.comicsapi.marvel.MarvelObject;
+import br.com.zup.comicsapi.marvel.MarvelResponse;
 import br.com.zup.comicsapi.marvel.MarvelPrice;
 import br.com.zup.comicsapi.marvel.MarvelResult;
 import br.com.zup.comicsapi.models.Comic;
@@ -41,14 +41,14 @@ public class ComicConverter {
         );
     }
 
-    public ComicDTO toDto(MarvelObject marvelObject) {
-        if (marvelObject == null || marvelObject.getData() == null
-                || marvelObject.getData().getResults() == null
-                || marvelObject.getData().getResults().isEmpty()) {
+    public ComicDTO toDto(MarvelResponse marvelResponse) {
+        if (marvelResponse == null || marvelResponse.getData() == null
+                || marvelResponse.getData().getResults() == null
+                || marvelResponse.getData().getResults().isEmpty()) {
             return null;
         }
 
-        MarvelResult marvelResult = marvelObject.getData().getResults().get(0);
+        MarvelResult marvelResult = marvelResponse.getData().getResults().get(0);
 
         List<MarvelPrice> prices = marvelResult.getPrices();
         BigDecimal printPrice = null;
