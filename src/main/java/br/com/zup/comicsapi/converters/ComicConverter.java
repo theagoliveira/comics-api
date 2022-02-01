@@ -41,7 +41,7 @@ public class ComicConverter {
         );
     }
 
-    public ComicDTO toDto(MarvelResponse marvelResponse) {
+    public Comic toEntity(MarvelResponse marvelResponse) {
         if (marvelResponse == null || marvelResponse.getData() == null
                 || marvelResponse.getData().getResults() == null
                 || marvelResponse.getData().getResults().isEmpty()) {
@@ -69,7 +69,7 @@ public class ComicConverter {
             }
         }
 
-        return new ComicDTO(
+        return new Comic(
             marvelResult.getId(), marvelResult.getTitle(), printPrice, authors,
             marvelResult.getIsbn(), marvelResult.getDescription()
         );

@@ -34,12 +34,12 @@ public class ComicConverterTest {
 
     @Test
     void convertNullComicParameterToDto() {
-        assertNull(comicConverter.toDto((Comic) null));
+        assertNull(comicConverter.toDto(null));
     }
 
     @Test
     void convertNullParameterToEntity() {
-        assertNull(comicConverter.toEntity(null));
+        assertNull(comicConverter.toEntity((ComicDTO) null));
     }
 
     @Test
@@ -109,46 +109,48 @@ public class ComicConverterTest {
     }
 
     @Test
-    void convertNullmarvelResponseParameterToDto() {
-        assertNull(comicConverter.toDto((MarvelResponse) null));
+    void convertNullmarvelResponseParameterToEntity() {
+        assertNull(comicConverter.toEntity((MarvelResponse) null));
     }
 
     @Test
-    void convertNullMarvelDataParameterToDto() {
-        assertNull(comicConverter.toDto(new MarvelResponse()));
+    void convertNullMarvelDataParameterToEntity() {
+        assertNull(comicConverter.toEntity(new MarvelResponse()));
     }
 
     @Test
-    void convertNullMarvelResultParameterToDto() {
-        assertNull(comicConverter.toDto(new MarvelResponse(new MarvelData())));
+    void convertNullMarvelResultParameterToEntity() {
+        assertNull(comicConverter.toEntity(new MarvelResponse(new MarvelData())));
     }
 
     @Test
-    void convertEmptyMarvelResultListParameterToDto() {
+    void convertEmptyMarvelResultListParameterToEntity() {
         assertNull(
-            comicConverter.toDto(new MarvelResponse(new MarvelData(new ArrayList<MarvelResult>())))
+            comicConverter.toEntity(
+                new MarvelResponse(new MarvelData(new ArrayList<MarvelResult>()))
+            )
         );
     }
 
     @Test
-    void convertEmptyMarvelResultParameterToDto() {
-        ComicDTO comicDto = comicConverter.toDto(
+    void convertEmptyMarvelResultParameterToEntity() {
+        Comic comic = comicConverter.toEntity(
             new MarvelResponse(
                 new MarvelData(new ArrayList<MarvelResult>(List.of(new MarvelResult())))
             )
         );
 
-        assertNull(comicDto.getComicId());
-        assertNull(comicDto.getTitle());
-        assertNull(comicDto.getPrice());
-        assertNull(comicDto.getIsbn());
-        assertNull(comicDto.getDescription());
-        assertEquals(0, comicDto.getAuthors().size());
+        assertNull(comic.getComicId());
+        assertNull(comic.getTitle());
+        assertNull(comic.getPrice());
+        assertNull(comic.getIsbn());
+        assertNull(comic.getDescription());
+        assertEquals(0, comic.getAuthors().size());
     }
 
     @Test
-    void convertBlankMarvelResultParameterToDto() {
-        ComicDTO comicDto = comicConverter.toDto(
+    void convertBlankMarvelResultParameterToEntity() {
+        Comic comic = comicConverter.toEntity(
             new MarvelResponse(
                 new MarvelData(
                     new ArrayList<MarvelResult>(
@@ -163,16 +165,16 @@ public class ComicConverterTest {
             )
         );
 
-        assertEquals(1L, comicDto.getComicId());
-        assertEquals("", comicDto.getTitle());
-        assertNull(comicDto.getPrice());
-        assertEquals("", comicDto.getIsbn());
-        assertEquals("", comicDto.getDescription());
-        assertEquals(0, comicDto.getAuthors().size());
+        assertEquals(1L, comic.getComicId());
+        assertEquals("", comic.getTitle());
+        assertNull(comic.getPrice());
+        assertEquals("", comic.getIsbn());
+        assertEquals("", comic.getDescription());
+        assertEquals(0, comic.getAuthors().size());
     }
 
     @Test
-    void convertValidMarvelResultParameterToDto() {
+    void convertValidMarvelResultParameterToEntity() {
         Long comicId = 4100L;
         String title = "Uncanny X-Men Omnibus Vol. 1 (Hardcover)";
         String description = "When a young writer named Chris Claremont took over X-Men in 1976, "
@@ -215,15 +217,15 @@ public class ComicConverterTest {
             )
         );
 
-        ComicDTO comicDto = comicConverter.toDto(obj);
+        Comic comic = comicConverter.toEntity(obj);
 
-        assertEquals(comicId, comicDto.getComicId());
-        assertEquals(title, comicDto.getTitle());
-        assertEquals(new BigDecimal("9.99"), comicDto.getPrice());
-        assertEquals(isbn, comicDto.getIsbn());
-        assertEquals(description, comicDto.getDescription());
-        assertEquals(6, comicDto.getAuthors().size());
-        assertTrue(comicDto.getAuthors().contains("Terry Kevin Austin (inker)"));
+        assertEquals(comicId, comic.getComicId());
+        assertEquals(title, comic.getTitle());
+        assertEquals(new BigDecimal("9.99"), comic.getPrice());
+        assertEquals(isbn, comic.getIsbn());
+        assertEquals(description, comic.getDescription());
+        assertEquals(6, comic.getAuthors().size());
+        assertTrue(comic.getAuthors().contains("Terry Kevin Austin (inker)"));
     }
 
 }
