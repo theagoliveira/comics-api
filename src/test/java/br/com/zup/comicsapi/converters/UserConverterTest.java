@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import br.com.zup.comicsapi.models.User;
 import br.com.zup.comicsapi.models.UserDTO;
 
-public class UserConverterTest {
+class UserConverterTest {
 
     UserConverter userConverter;
 

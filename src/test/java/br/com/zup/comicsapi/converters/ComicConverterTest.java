@@ -23,7 +23,7 @@ import br.com.zup.comicsapi.marvel.MarvelResult;
 import br.com.zup.comicsapi.models.Comic;
 import br.com.zup.comicsapi.models.ComicDTO;
 
-public class ComicConverterTest {
+class ComicConverterTest {
 
     private static final Set<String> AUTHORS = new HashSet<>(List.of("Author 1", "Author 2"));
 
