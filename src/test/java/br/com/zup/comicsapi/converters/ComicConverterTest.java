@@ -53,26 +53,7 @@ public class ComicConverterTest {
     }
 
     @Test
-    void convertToDtoNotDiscounted() {
-        Set<String> authors = new HashSet<>(List.of("Author 1", "Author 2"));
-        Comic comic = new Comic(
-            1L, "Title", new BigDecimal("1.99"), false, authors, "12345678900", "A comic"
-        );
-
-        ComicDTO comicDto = comicConverter.toDto(comic);
-
-        assertNotNull(comicDto);
-        assertEquals(1L, comicDto.getComicId());
-        assertEquals("Title", comicDto.getTitle());
-        assertEquals(new BigDecimal("1.99"), comicDto.getPrice());
-        assertEquals(false, comicDto.getDiscounted());
-        assertEquals(authors, comicDto.getAuthors());
-        assertEquals("12345678900", comicDto.getIsbn());
-        assertEquals("A comic", comicDto.getDescription());
-    }
-
-    @Test
-    void convertToDtoDiscounted() {
+    void convertToDto() {
         Set<String> authors = new HashSet<>(List.of("Author 1", "Author 2"));
         Comic comic = new Comic(
             1L, "Title", new BigDecimal("10.00"), true, authors, "12345678900", "A comic"
@@ -83,7 +64,7 @@ public class ComicConverterTest {
         assertNotNull(comicDto);
         assertEquals(1L, comicDto.getComicId());
         assertEquals("Title", comicDto.getTitle());
-        assertEquals(new BigDecimal("9.00"), comicDto.getPrice());
+        assertEquals(new BigDecimal("10.00"), comicDto.getPrice());
         assertEquals(true, comicDto.getDiscounted());
         assertEquals(authors, comicDto.getAuthors());
         assertEquals("12345678900", comicDto.getIsbn());

@@ -1,5 +1,8 @@
 package br.com.zup.comicsapi.services;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +18,11 @@ import br.com.zup.comicsapi.repositories.UserRepository;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final Clock clock;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, Clock clock) {
         this.userRepository = userRepository;
+        this.clock = clock;
     }
 
     public User save(User user) {
@@ -30,7 +35,7 @@ public class UserService {
 
     public List<Comic> findComicsById(Long userId) {
         Set<Comic> userComics = userRepository.findById(userId).get().getComics();
-        Integer dayOfWeekValue = LocalDate.now().getDayOfWeek().getValue();
+        Integer dayOfWeekValue = LocalDate.now(clock).getDayOfWeek().getValue();
 
         for (Comic comic : userComics) {
             String isbn = comic.getIsbn();
@@ -38,7 +43,15 @@ public class UserService {
             boolean shouldBeDiscounted = lastIsbnDigit == (2 * dayOfWeekValue - 1)
                     || lastIsbnDigit == (2 * dayOfWeekValue - 2);
 
-            comic.setDiscounted(shouldBeDiscounted);
+            if (shouldBeDiscounted) {
+                comic.setDiscounted(true);
+                comic.setPrice(
+                    comic.getPrice()
+                         .multiply(new BigDecimal("0.90"))
+                         .setScale(2, RoundingMode.HALF_EVEN)
+                );
+            }
+
         }
 
         return new ArrayList<>(userComics);

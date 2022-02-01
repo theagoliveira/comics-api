@@ -8,7 +8,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
+import java.time.Clock;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -28,8 +30,13 @@ import br.com.zup.comicsapi.repositories.UserRepository;
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
+    private final static LocalDate TEST_DATE = LocalDate.of(2022, 01, 31);
+
     @Mock
     UserRepository userRepository;
+
+    @Mock
+    Clock clock;
 
     @InjectMocks
     UserService userService;
@@ -62,38 +69,53 @@ class UserServiceTest {
     }
 
     @Test
-    void findComicsById() {
+    void findComicsByIdDiscounted() {
+        Clock fixedClock = Clock.fixed(
+            TEST_DATE.atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault()
+        );
         Comic comic1 = new Comic(
             1L, "Title1", new BigDecimal("10.00"), new HashSet<>(), "12345678900", "A first comic"
         );
-        Comic comic2 = new Comic(
-            2L, "Title2", new BigDecimal("10.00"), new HashSet<>(), "12345678902", "A second comic"
-        );
-
-        Set<Comic> comics = Set.of(comic1, comic2);
+        Set<Comic> comics = Set.of(comic1);
         User user1 = new User(1L, "User1", "user1@example.com", "12345678900", "01/01/1991");
+
         user1.setComics(comics);
 
+        when(clock.instant()).thenReturn(fixedClock.instant());
+        when(clock.getZone()).thenReturn(fixedClock.getZone());
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user1));
+
         List<Comic> userComics = userService.findComicsById(1L);
 
-        Integer dayOfWeekValue = LocalDate.now().getDayOfWeek().getValue();
+        assertNotNull(userComics);
+        assertEquals(1, userComics.size());
+        assertEquals(true, userComics.get(0).getDiscounted());
+        assertEquals(new BigDecimal("9.00"), userComics.get(0).getPrice());
+    }
 
-        String isbn1 = userComics.get(0).getIsbn();
-        String isbn2 = userComics.get(1).getIsbn();
+    @Test
+    void findComicsByIdNotDiscounted() {
+        Clock fixedClock = Clock.fixed(
+            TEST_DATE.atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault()
+        );
+        Comic comic1 = new Comic(
+            1L, "Title1", new BigDecimal("10.00"), new HashSet<>(), "12345678902", "A first comic"
+        );
+        Set<Comic> comics = Set.of(comic1);
+        User user1 = new User(1L, "User1", "user1@example.com", "12345678900", "01/01/1991");
 
-        int lastIsbnDigit1 = isbn1.charAt(isbn1.length() - 1) - 48;
-        int lastIsbnDigit2 = isbn2.charAt(isbn2.length() - 1) - 48;
+        user1.setComics(comics);
 
-        boolean shouldBeDiscounted1 = lastIsbnDigit1 == (2 * dayOfWeekValue - 1)
-                || lastIsbnDigit1 == (2 * dayOfWeekValue - 2);
-        boolean shouldBeDiscounted2 = lastIsbnDigit2 == (2 * dayOfWeekValue - 1)
-                || lastIsbnDigit2 == (2 * dayOfWeekValue - 2);
+        when(clock.instant()).thenReturn(fixedClock.instant());
+        when(clock.getZone()).thenReturn(fixedClock.getZone());
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user1));
+
+        List<Comic> userComics = userService.findComicsById(1L);
 
         assertNotNull(userComics);
-        assertEquals(2, userComics.size());
-        assertEquals(shouldBeDiscounted1, userComics.get(0).getDiscounted());
-        assertEquals(shouldBeDiscounted2, userComics.get(1).getDiscounted());
+        assertEquals(1, userComics.size());
+        assertEquals(false, userComics.get(0).getDiscounted());
+        assertEquals(new BigDecimal("10.00"), userComics.get(0).getPrice());
     }
 
 }

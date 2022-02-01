@@ -99,6 +99,10 @@ public class Comic {
         return users;
     }
 
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
     public void setDiscounted(boolean discounted) {
         this.discounted = discounted;
     }

@@ -29,14 +29,8 @@ public class ComicConverter {
             authors = new HashSet<>(authors);
         }
 
-        BigDecimal price = comic.getPrice();
-
-        if (comic.getDiscounted()) {
-            price = price.multiply(new BigDecimal("0.90")).setScale(2, RoundingMode.HALF_EVEN);
-        }
-
         return new ComicDTO(
-            comic.getComicId(), comic.getTitle(), price, comic.getDiscounted(), authors,
+            comic.getComicId(), comic.getTitle(), comic.getPrice(), comic.getDiscounted(), authors,
             comic.getIsbn(), comic.getDescription()
         );
     }

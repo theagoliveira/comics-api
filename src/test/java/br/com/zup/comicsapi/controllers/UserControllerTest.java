@@ -160,7 +160,7 @@ class UserControllerTest {
     void userComics() throws Exception {
         Set<String> authors = new HashSet<>(List.of("Author 1", "Author 2"));
         Comic comic1 = new Comic(
-            1L, "Title", new BigDecimal("10.00"), true, authors, "12345678900", "A comic"
+            1L, "Title", new BigDecimal("9.00"), true, authors, "12345678900", "A comic"
         );
         Comic comic2 = new Comic(
             1L, "Title", new BigDecimal("10.00"), false, authors, "12345678900", "A comic"
