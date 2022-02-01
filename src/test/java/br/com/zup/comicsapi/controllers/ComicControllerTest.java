@@ -27,7 +27,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import br.com.zup.comicsapi.converters.ComicConverter;
 import br.com.zup.comicsapi.marvel.MarvelResponse;
 import br.com.zup.comicsapi.models.Comic;
-import br.com.zup.comicsapi.models.ComicDTO;
 import br.com.zup.comicsapi.models.User;
 import br.com.zup.comicsapi.repositories.ComicRepository;
 import br.com.zup.comicsapi.repositories.UserRepository;

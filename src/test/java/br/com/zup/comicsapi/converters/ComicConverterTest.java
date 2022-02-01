@@ -25,6 +25,8 @@ import br.com.zup.comicsapi.models.ComicDTO;
 
 public class ComicConverterTest {
 
+    private static final Set<String> AUTHORS = new HashSet<>(List.of("Author 1", "Author 2"));
+
     ComicConverter comicConverter;
 
     @BeforeEach
@@ -54,9 +56,8 @@ public class ComicConverterTest {
 
     @Test
     void convertToDto() {
-        Set<String> authors = new HashSet<>(List.of("Author 1", "Author 2"));
         Comic comic = new Comic(
-            1L, "Title", new BigDecimal("10.00"), true, authors, "12345678900", "A comic"
+            1L, "Title", new BigDecimal("10.00"), true, AUTHORS, "12345678900", "A comic"
         );
 
         ComicDTO comicDto = comicConverter.toDto(comic);
@@ -66,16 +67,15 @@ public class ComicConverterTest {
         assertEquals("Title", comicDto.getTitle());
         assertEquals(new BigDecimal("10.00"), comicDto.getPrice());
         assertEquals(true, comicDto.getDiscounted());
-        assertEquals(authors, comicDto.getAuthors());
+        assertEquals(AUTHORS, comicDto.getAuthors());
         assertEquals("12345678900", comicDto.getIsbn());
         assertEquals("A comic", comicDto.getDescription());
     }
 
     @Test
     void convertToEntity() {
-        Set<String> authors = new HashSet<>(List.of("Author 1", "Author 2"));
         ComicDTO comicDto = new ComicDTO(
-            1L, "Title", new BigDecimal("1.99"), authors, "12345678900", "A comic"
+            1L, "Title", new BigDecimal("1.99"), AUTHORS, "12345678900", "A comic"
         );
 
         Comic comic = comicConverter.toEntity(comicDto);
@@ -84,7 +84,7 @@ public class ComicConverterTest {
         assertEquals(1L, comic.getComicId());
         assertEquals("Title", comic.getTitle());
         assertEquals(new BigDecimal("1.99"), comic.getPrice());
-        assertEquals(authors, comic.getAuthors());
+        assertEquals(AUTHORS, comic.getAuthors());
         assertEquals("12345678900", comic.getIsbn());
         assertEquals("A comic", comic.getDescription());
     }

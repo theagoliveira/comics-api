@@ -30,7 +30,20 @@ import br.com.zup.comicsapi.repositories.UserRepository;
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
-    private final static LocalDate TEST_DATE = LocalDate.of(2022, 01, 31);
+    private final static User USER1_NO_ID = new User(
+        "User1", "user1@example.com", "12345678900", "01/01/1991"
+    );
+    private final static User USER2 = new User(
+        2L, "User2", "user2@example.com", "12345678902", "02/02/1992"
+    );
+
+    private final static LocalDate TEST_DATE_MONDAY = LocalDate.of(2022, 01, 31);
+    private final static LocalDate TEST_DATE_TUESDAY = LocalDate.of(2022, 02, 01);
+
+    private User USER1 = new User(1L, "User1", "user1@example.com", "12345678900", "01/01/1991");
+    private Comic COMIC = new Comic(
+        1L, "Title1", new BigDecimal("10.00"), new HashSet<>(), "12345678900", "A first comic"
+    );
 
     @Mock
     UserRepository userRepository;
@@ -43,11 +56,8 @@ class UserServiceTest {
 
     @Test
     void save() {
-        User userToSave = new User("User", "user@example.com", "12345678900", "01/01/1991");
-        User returnedUser = new User(1L, "User", "user@example.com", "12345678900", "01/01/1991");
-
-        when(userRepository.save(any(User.class))).thenReturn(returnedUser);
-        User savedUser = userService.save(userToSave);
+        when(userRepository.save(any(User.class))).thenReturn(USER1);
+        User savedUser = userService.save(USER1_NO_ID);
 
         assertNotNull(savedUser);
         assertEquals(1L, savedUser.getId());
@@ -56,9 +66,7 @@ class UserServiceTest {
 
     @Test
     void findAll() {
-        User user1 = new User(1L, "User1", "user1@example.com", "12345678900", "01/01/1991");
-        User user2 = new User(2L, "User2", "user2@example.com", "98765432100", "09/09/1999");
-        List<User> returnedUsers = new ArrayList<>(List.of(user1, user2));
+        List<User> returnedUsers = new ArrayList<>(List.of(USER1, USER2));
 
         when(userRepository.findAll()).thenReturn(returnedUsers);
         List<User> users = userService.findAll();
@@ -71,19 +79,15 @@ class UserServiceTest {
     @Test
     void findComicsByIdDiscounted() {
         Clock fixedClock = Clock.fixed(
-            TEST_DATE.atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault()
+            TEST_DATE_MONDAY.atStartOfDay(ZoneId.systemDefault()).toInstant(),
+            ZoneId.systemDefault()
         );
-        Comic comic1 = new Comic(
-            1L, "Title1", new BigDecimal("10.00"), new HashSet<>(), "12345678900", "A first comic"
-        );
-        Set<Comic> comics = Set.of(comic1);
-        User user1 = new User(1L, "User1", "user1@example.com", "12345678900", "01/01/1991");
-
-        user1.setComics(comics);
+        Set<Comic> comics = Set.of(COMIC);
+        USER1.setComics(comics);
 
         when(clock.instant()).thenReturn(fixedClock.instant());
         when(clock.getZone()).thenReturn(fixedClock.getZone());
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user1));
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(USER1));
 
         List<Comic> userComics = userService.findComicsById(1L);
 
@@ -96,19 +100,16 @@ class UserServiceTest {
     @Test
     void findComicsByIdNotDiscounted() {
         Clock fixedClock = Clock.fixed(
-            TEST_DATE.atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault()
+            TEST_DATE_TUESDAY.atStartOfDay(ZoneId.systemDefault()).toInstant(),
+            ZoneId.systemDefault()
         );
-        Comic comic1 = new Comic(
-            1L, "Title1", new BigDecimal("10.00"), new HashSet<>(), "12345678902", "A first comic"
-        );
-        Set<Comic> comics = Set.of(comic1);
-        User user1 = new User(1L, "User1", "user1@example.com", "12345678900", "01/01/1991");
 
-        user1.setComics(comics);
+        Set<Comic> comics = Set.of(COMIC);
+        USER1.setComics(comics);
 
         when(clock.instant()).thenReturn(fixedClock.instant());
         when(clock.getZone()).thenReturn(fixedClock.getZone());
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user1));
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(USER1));
 
         List<Comic> userComics = userService.findComicsById(1L);
 

@@ -1,7 +1,6 @@
 package br.com.zup.comicsapi.converters;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 import br.com.zup.comicsapi.marvel.MarvelCreators;
 import br.com.zup.comicsapi.marvel.MarvelCreatorsItem;
-import br.com.zup.comicsapi.marvel.MarvelResponse;
 import br.com.zup.comicsapi.marvel.MarvelPrice;
+import br.com.zup.comicsapi.marvel.MarvelResponse;
 import br.com.zup.comicsapi.marvel.MarvelResult;
 import br.com.zup.comicsapi.models.Comic;
 import br.com.zup.comicsapi.models.ComicDTO;
