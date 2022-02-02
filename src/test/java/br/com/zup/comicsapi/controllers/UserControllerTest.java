@@ -169,7 +169,7 @@ class UserControllerTest {
         when(userRepository.existsById(anyLong())).thenReturn(true);
         when(userService.findComicsById(anyLong())).thenReturn(List.of(comic1, comic2));
 
-        mockMvc.perform(get(UserController.BASE_URI + "/" + 1L + "/comics"))
+        mockMvc.perform(get(UserController.BASE_URI + "/" + 1 + "/comics"))
                .andExpect(status().isOk())
                .andExpect(jsonPath("$", hasSize(2)))
                .andExpect(jsonPath("$.[0].comicId", equalTo(1)))
