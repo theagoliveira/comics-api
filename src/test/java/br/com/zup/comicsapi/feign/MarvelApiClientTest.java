@@ -45,6 +45,7 @@ class MarvelApiClientTest {
             comicId, timestamp, pubKey, hash
         );
 
+        // Testing structure
         assertNotNull(marvelResponse);
         assertNotNull(marvelResponse.getData());
         assertNotNull(marvelResponse.getData().getResults());

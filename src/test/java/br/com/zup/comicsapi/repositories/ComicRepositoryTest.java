@@ -31,7 +31,7 @@ class ComicRepositoryTest {
         );
         comicRepository.save(
             new Comic(
-                2l, "Comic 2", new BigDecimal("2.99"), new HashSet<>(List.of("Author")),
+                2L, "Comic 2", new BigDecimal("2.99"), new HashSet<>(List.of("Author")),
                 "9781492078005", "Second comic."
             )
         );

@@ -33,6 +33,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    // Could receive an user directly instead of an userId
     public List<Comic> findComicsById(Long userId) {
         Set<Comic> userComics = userRepository.findById(userId).get().getComics();
         Integer dayOfWeekValue = LocalDate.now(clock).getDayOfWeek().getValue();

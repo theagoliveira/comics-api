@@ -15,6 +15,7 @@ public class ComicsApiApplication {
         SpringApplication.run(ComicsApiApplication.class, args);
     }
 
+    // Mock LocalDate.now() with Clock
     @Bean
     public Clock clock() {
         return Clock.systemDefaultZone();

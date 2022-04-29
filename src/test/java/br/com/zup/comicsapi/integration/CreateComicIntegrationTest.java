@@ -40,6 +40,7 @@ class CreateComicIntegrationTest {
         userRepository.save(new User("User 1", "user1@example.com", "12345678901", "01/01/1991"));
     }
 
+    // Problem with user.getComics()
     @Test
     @Transactional
     void createComic() throws Exception {

@@ -29,13 +29,15 @@ public class Comic {
 
     private boolean discounted = false;
 
-    @NotEmpty(message = "Authors cannot be empty.")
+    // Fix error
     @ElementCollection
+    @NotEmpty(message = "Authors cannot be empty.")
     private Set<String> authors = new HashSet<>();
 
     @NotBlank(message = "ISBN cannot be blank.")
     private String isbn;
 
+    // Large strings
     @NotBlank(message = "Description cannot be blank.")
     @Lob
     @Column(columnDefinition = "CLOB")

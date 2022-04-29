@@ -69,11 +69,16 @@ public class ComicController {
             throw new InvalidUserIdException("Error when creating a new comic.");
         }
 
+        // Get the number of seconds from 1970-01-01 00:00:00 as a String
         String timestamp = String.valueOf(Instant.now().getEpochSecond());
 
+        // String to bytes
         byte[] bytesOfMessage = (timestamp + privKey + pubKey).getBytes(StandardCharsets.UTF_8);
+        // Hash object (throws NoSuchAlgorithmException)
         MessageDigest md = MessageDigest.getInstance("MD5");
+        // Hash the information
         byte[] bytesOfDigest = md.digest(bytesOfMessage);
+        // Convert bytes to String
         String hash = DatatypeConverter.printHexBinary(bytesOfDigest).toLowerCase();
 
         // Get the result from Marvel API
