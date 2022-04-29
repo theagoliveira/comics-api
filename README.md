@@ -179,7 +179,7 @@ public void create(...) {      // (POST) de uma vez so.
 
 Para cadastrar os usuários no sistema, o controlador deve receber do cliente uma requisição contendo os dados que a serem cadastrados (nome, email etc.). Esses dados serão armazenados em um objeto DTO, que será validado pelo sistema de acordo com as restrições citadas anteriormente. Com todas as informações validadas, o DTO será convertido para um objeto de entidade e enviado ao serviço de usuário para ser salvo no banco de dados. Para salvar o objeto no banco de dados, o serviço utiliza o repositório de usuário. A imagem a seguir ilustra esse processo:
 
-![](createuser.svg){width=100%}
+![](images/createuser.svg){width=100%}
 
 Caso as informações estejam válidas e o processo ocorra sem problemas, a API retorna o status com código HTTP 201 para o cliente, o que significa que a criação do recurso (usuário) ocorreu com sucesso. Caso exista algum problema com as informações recebidas, a API retorna o status com código HTTP 400, o que significa que houve uma solicitação inválida. Nesses casos onde existe um erro, o cliente recebe uma mensagem informando o erro ocorrido. É importante destacar que existem duas classes de erros HTTP, a depender do código numérico:
 
@@ -213,7 +213,7 @@ As mensagens foram obtidas com o software **Postman**. No [repositório][GitHub]
 
 Na busca de usuários, o cliente envia uma requisição vazia usando URL e comando HTTP apropriados. Ao receber a requisição, o controlador de usuário pede a lista de usuários ao serviço, o qual aciona o repositório para a obtenção das informações do banco de dados. A lista é retornada ao controlador que a converte em uma lista de DTOs de usuários, objetos mais simples que não contém a coleção de quadrinhos de cada usuário. Essa lista é então enviada ao cliente no formato JSON. A imagem a seguir ilustra esse processo:
 
-![](listusers.svg){width=100%}
+![](images/listusers.svg){width=100%}
 
 ## Adição dos quadrinhos à API
 
@@ -336,7 +336,7 @@ No caso de não existir nenhuma violação, é feita uma checagem do ISBN obtido
 
 A imagem a seguir ilustra o processo de cadastro de um quadrinho (fluxo: caminho azul > caminho verde > caminho amarelo):
 
-![](createcomic.svg){width=100%}
+![](images/createcomic.svg){width=100%}
 
 Com a implementação dos cadastros de usuários e quadrinhos terminada, podemos finalizar a implementação da API com a busca das coleções de quadrinhos dos usuários.
 
@@ -358,7 +358,7 @@ Em posse da lista de quadrinhos, o serviço se encarrega de aplicar as regras de
 
 O serviço então altera o atributo de desconto e o preço de cada objeto de quadrinho de acordo com essas regras e envia a lista para o controlador, que a redireciona para o conversor de quadrinhos. Dessa forma, o DTO criado a partir do objeto de quadrinho já é construído com o preço modificado. A imagem abaixo ilustra este processo:
 
-![](listcomics.svg){width=100%}
+![](images/listcomics.svg){width=100%}
 
 Com isso, chegamos ao final da implementação da API para gerenciamento de coleções de quadrinhos. Esperamos que esse conteúdo tenha trazido aprendizado e despertado o interesse de construir novos projetos com Java e Spring Framework. Deixamos aqui a sugestão de reproduzir esse projeto e atualizá-lo com novas funcionalidades. Como você expandiria esse projeto? O que poderia ser melhor ou diferente? Até a próxima!
 
